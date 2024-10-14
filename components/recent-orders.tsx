@@ -8,7 +8,6 @@ import {
 	TableBody,
 	TableCell,
 } from "./ui/table";
-import { TableSkeleton } from "./loaders/table";
 
 export async function RecentOrders() {
 	const recentOrders = await prisma.order.findMany({
@@ -22,7 +21,7 @@ export async function RecentOrders() {
 			},
 		},
 	});
-	return recentOrders && recentOrders.length > 0 ? (
+	return (
 		<Card>
 			<CardContent>
 				<Table>
@@ -58,7 +57,5 @@ export async function RecentOrders() {
 				</Table>
 			</CardContent>
 		</Card>
-	) : (
-		<TableSkeleton number={3} />
 	);
 }

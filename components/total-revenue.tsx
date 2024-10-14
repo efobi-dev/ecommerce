@@ -1,5 +1,4 @@
 import prisma from "@/lib/db";
-import { CardSkeleton } from "./loaders/card";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DollarSign } from "lucide-react";
 
@@ -45,7 +44,7 @@ export async function TotalRevenue() {
 				100
 			: 0;
 
-	return currentRevenue ? (
+	return (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -64,7 +63,5 @@ export async function TotalRevenue() {
 				</p>
 			</CardContent>
 		</Card>
-	) : (
-		<CardSkeleton title="Total Revenue" icon={<DollarSign />} />
 	);
 }

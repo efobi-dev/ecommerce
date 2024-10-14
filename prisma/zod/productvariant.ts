@@ -2,7 +2,7 @@ import * as z from "zod"
 import { CompleteProduct, relatedProductSchema, CompleteOrderItem, relatedOrderItemSchema } from "./index"
 
 export const productVariantSchema = z.object({
-  id: z.number().int(),
+  id: z.string(),
   name: z.string(),
   sku: z.string(),
   price: z.number(),

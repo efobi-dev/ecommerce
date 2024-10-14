@@ -8,7 +8,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { ChartSkeleton } from "./loaders/chart";
 import { OrderChart } from "./orders-chart";
 
 export async function Orders() {
@@ -41,7 +40,7 @@ export async function Orders() {
 	const latestPercentageChange =
 		formattedChartData[formattedChartData.length - 1].percentageChange;
 
-	return orders ? (
+	return (
 		<Card>
 			<CardHeader>
 				<CardTitle>Monthly Sales Overview</CardTitle>
@@ -69,7 +68,5 @@ export async function Orders() {
 				</div>
 			</CardFooter>
 		</Card>
-	) : (
-		<ChartSkeleton />
 	);
 }

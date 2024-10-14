@@ -1,7 +1,6 @@
 import { Users } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import prisma from "@/lib/db";
-import { CardSkeleton } from "./loaders/card";
 
 export async function TotalOrders() {
 	const currentDate = new Date();
@@ -41,7 +40,7 @@ export async function TotalOrders() {
 			? ((lastMonthOrders - twoMonthsAgoOrders) / twoMonthsAgoOrders) * 100
 			: 0;
 
-	return totalOrders ? (
+	return (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<CardTitle className="text-sm font-medium">Total Orders</CardTitle>
@@ -55,7 +54,5 @@ export async function TotalOrders() {
 				</p>
 			</CardContent>
 		</Card>
-	) : (
-		<CardSkeleton title="Total Orders" icon={<Users />} />
 	);
 }

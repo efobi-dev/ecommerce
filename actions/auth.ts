@@ -40,7 +40,7 @@ export async function signUp(values: SignUp) {
 			sessionCookie.value,
 			sessionCookie.attributes,
 		);
-		redirect("/verify");
+		redirect("/products");
 	} catch (error) {
 		console.error(error);
 		return { error: "Internal server error" };
@@ -67,7 +67,7 @@ export async function signIn(values: SignIn) {
 			sessionCookie.value,
 			sessionCookie.attributes,
 		);
-		redirect("/verify");
+		redirect("/products");
 	} catch (error) {
 		console.error(error);
 		return { error: "Internal server error" };
@@ -128,6 +128,25 @@ export async function changeEmail(email: string) {
 		});
 		if (!response) return { error: "Failed to update email" };
 		return { success: true, message: "Email updated successfully" };
+	} catch (error) {
+		console.error(error);
+		return { error: "Internal server error" };
+	}
+}
+
+export async function changeName(name: string) {
+	try {
+		const { user } = await getAuth();
+		const response = await prisma.user.update({
+			where: {
+				id: user?.id,
+			},
+			data: {
+				fullName: name,
+			},
+		});
+		if (!response) return { error: "Failed to update name" };
+		return { success: true, message: "Name updated successfully" };
 	} catch (error) {
 		console.error(error);
 		return { error: "Internal server error" };

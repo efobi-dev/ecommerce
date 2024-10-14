@@ -12,6 +12,8 @@ import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import { useSidebarStore } from "@/lib/store";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { signOut } from "@/actions/auth";
+import Link from "next/link";
 
 export function Header({ email }: { email: string }) {
 	const { toggle } = useSidebarStore();
@@ -34,12 +36,18 @@ export function Header({ email }: { email: string }) {
 						</Avatar>
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
+				<DropdownMenuContent align="end" className="space-y-2">
 					<DropdownMenuLabel>My Account</DropdownMenuLabel>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem>Profile</DropdownMenuItem>
-					<DropdownMenuItem>Settings</DropdownMenuItem>
-					<DropdownMenuItem>Logout</DropdownMenuItem>
+					<DropdownMenuItem>
+						<Link href={"/settings"}>Settings</Link>
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className="bg-destructive"
+						onClick={() => signOut()}
+					>
+						Log out
+					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</header>

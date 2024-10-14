@@ -24,7 +24,6 @@ export function OrderChart({
 	chartData: {
 		month: string;
 		sales: number;
-		percentageChange: number;
 	}[];
 }) {
 	return (

@@ -4,13 +4,16 @@ import * as React from "react";
 import {
 	type ColumnDef,
 	type SortingState,
+	type ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
+	getFilteredRowModel,
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
 import { Button } from "./button";
+import { Input } from "./input";
 
 import {
 	Table,
@@ -20,6 +23,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { usePathname } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -31,6 +35,10 @@ export function DataTable<TData, TValue>({
 	data,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
+	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+		[],
+	);
+	const pathname = usePathname();
 	const table = useReactTable({
 		data,
 		columns,
@@ -38,30 +46,45 @@ export function DataTable<TData, TValue>({
 		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
 		state: {
 			sorting,
+			columnFilters,
 		},
 	});
 
 	return (
-		<div>
-			<div className="flex items-center justify-end space-x-2 py-4">
-				<Button
-					variant="outline"
-					size="sm"
-					onClick={() => table.previousPage()}
-					disabled={!table.getCanPreviousPage()}
-				>
-					Previous
-				</Button>
-				<Button
-					variant="outline"
-					size="sm"
-					onClick={() => table.nextPage()}
-					disabled={!table.getCanNextPage()}
-				>
-					Next
-				</Button>
+		<>
+			<div
+				className={`flex items-center py-4 ${pathname === "/orders" ? "justify-end" : "justify-between"}`}
+			>
+				<Input
+					placeholder="Filter products..."
+					value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+					onChange={(event) =>
+						table.getColumn("name")?.setFilterValue(event.target.value)
+					}
+					className={`${pathname === "/orders" ? "hidden" : "max-w-sm"}`}
+				/>
+				<div className="flex items-center space-x-2 py-4">
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => table.previousPage()}
+						disabled={!table.getCanPreviousPage()}
+					>
+						Previous
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => table.nextPage()}
+						disabled={!table.getCanNextPage()}
+					>
+						Next
+					</Button>
+				</div>
 			</div>
 			<div className="rounded-md border">
 				<Table>
@@ -113,6 +136,6 @@ export function DataTable<TData, TValue>({
 					</TableBody>
 				</Table>
 			</div>
-		</div>
+		</>
 	);
 }

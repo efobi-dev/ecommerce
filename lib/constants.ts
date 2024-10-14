@@ -4,6 +4,9 @@ import type {
 	orderSchema,
 	orderItemSchema,
 	productSchema,
+	categorySchema,
+	productImageSchema,
+	storeSchema,
 } from "@/prisma/zod";
 
 export type SignIn = z.infer<typeof signInSchema>;
@@ -12,6 +15,9 @@ export type Order = z.infer<typeof orderSchema>;
 export type Customer = z.infer<typeof customerSchema>;
 export type OrderItem = z.infer<typeof orderItemSchema>;
 export type Product = z.infer<typeof productSchema>;
+export type Category = z.infer<typeof categorySchema>;
+export type ProductImage = z.infer<typeof productImageSchema>;
+export type Store = z.infer<typeof storeSchema>;
 
 export interface Menu {
 	name: string;
@@ -60,9 +66,9 @@ export const menuLink: Menu[] = [
 		link: "/products",
 		icon: "Package",
 	},
-	{
-		name: "Customers",
-		link: "/users",
-		icon: "Users",
-	},
+	// {
+	// 	name: "Users",
+	// 	link: "/users",
+	// 	icon: "Users",
+	// },
 ];

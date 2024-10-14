@@ -2,7 +2,7 @@ import * as z from "zod"
 import { CompleteProduct, relatedProductSchema } from "./index"
 
 export const productImageSchema = z.object({
-  id: z.number().int(),
+  id: z.string(),
   url: z.string(),
   altText: z.string().nullish(),
   productId: z.string(),

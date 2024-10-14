@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export type Order = {
 	id: string;
-	customerId: number;
+	customerId: string;
 	totalAmount: number;
 	createdAt: string;
 	updatedAt: string;

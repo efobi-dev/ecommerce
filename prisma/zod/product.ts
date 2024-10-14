@@ -7,8 +7,8 @@ export const productSchema = z.object({
   description: z.string().nullish(),
   sku: z.string(),
   basePrice: z.number(),
-  categoryId: z.number().int(),
-  supplierId: z.number().int(),
+  categoryId: z.string(),
+  available: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

@@ -2,7 +2,7 @@ import * as z from "zod"
 import { CompleteOrder, relatedOrderSchema } from "./index"
 
 export const customerSchema = z.object({
-  id: z.number().int(),
+  id: z.string(),
   name: z.string(),
   email: z.string(),
   phone: z.string().nullish(),

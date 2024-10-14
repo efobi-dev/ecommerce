@@ -39,7 +39,7 @@ export function SideBar({ menu }: { menu: Menu[] }) {
 								<Link href={route.link}>
 									<Button
 										variant={
-											pathname.includes(route.link) ? "secondary" : "ghost"
+											pathname.includes(route.link) ? "default" : "ghost"
 										}
 										className="w-full justify-start"
 									>

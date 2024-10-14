@@ -2,10 +2,10 @@ import * as z from "zod"
 import { CompleteOrder, relatedOrderSchema, CompleteProduct, relatedProductSchema, CompleteProductVariant, relatedProductVariantSchema } from "./index"
 
 export const orderItemSchema = z.object({
-  id: z.number().int(),
+  id: z.string(),
   orderId: z.string(),
   productId: z.string(),
-  productVariantId: z.number().int(),
+  productVariantId: z.string(),
   quantity: z.number().int(),
   price: z.number(),
 })
