@@ -6,7 +6,7 @@ import type { Store } from "@/lib/constants";
 import { storeSchema } from "@/prisma/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import {

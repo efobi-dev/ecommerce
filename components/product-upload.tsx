@@ -17,6 +17,7 @@ import { Input } from "./ui/input";
 
 export function ProductUpload({ productId }: { productId: string }) {
 	const { toast } = useToast();
+	const [maxImage, setMaxImage] = useState(0);
 	const [pending, startTransition] = useTransition();
 	const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
 	const form = useForm<ProductImage>({
@@ -28,7 +29,7 @@ export function ProductUpload({ productId }: { productId: string }) {
 			altText: "",
 		},
 	});
-
+	//set max images to 3 as we are allocated 2GB free max space, with 4mb per image that's around 170 products max
 	function submit(values: ProductImage) {
 		startTransition(async () => {
 			try {
@@ -73,13 +74,20 @@ export function ProductUpload({ productId }: { productId: string }) {
 						/>
 					) : (
 						<UploadDropzone
+							disabled={maxImage === 2}
 							endpoint="products"
 							onClientUploadComplete={(res) => {
 								form.setValue("url", res[0].url);
 								setFileUrl(res[0].url);
+								setMaxImage((prev) => prev + 1);
 							}}
 							className="w-full max-w-md border-2 border-dashed border-gray-300 rounded-lg p-6"
 						/>
+					)}
+					{maxImage === 2 && (
+						<p className="text-center text-destructive">
+							Maximum 3 images allowed
+						</p>
 					)}
 				</div>
 				<FormField

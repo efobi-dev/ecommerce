@@ -1,4 +1,6 @@
-import { TabsContent } from "./ui/tabs";
+import prisma from "@/lib/db";
+import { AdminTable } from "./admin-table";
+import { AddUser } from "./create-admin";
 import {
 	Card,
 	CardContent,
@@ -6,9 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
-import { AddUser } from "./create-admin";
-import prisma from "@/lib/db";
-import { AdminTable } from "./admin-table";
+import { TabsContent } from "./ui/tabs";
 
 export async function UserTab() {
 	const admins = await prisma.user.findMany({

@@ -2,6 +2,7 @@ import { EmailChange } from "@/components/email-change";
 import { NameChange } from "@/components/name-change";
 import { PasswordChange } from "@/components/password-change";
 import { StoreForm } from "@/components/store-form";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
 	Card,
 	CardContent,
@@ -10,9 +11,8 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getAuth } from "@/lib/auth";
 import { UserTab } from "@/components/user-tab";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { getAuth } from "@/lib/auth";
 
 export default async function Page() {
 	const tabList = [
