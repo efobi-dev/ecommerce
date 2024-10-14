@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DollarSign } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export async function TotalRevenue() {
 	const currentDate = new Date();

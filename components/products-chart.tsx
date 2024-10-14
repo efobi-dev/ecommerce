@@ -5,10 +5,10 @@ import {
 	BarChart,
 	CartesianGrid,
 	LabelList,
-	XAxis,
-	Tooltip,
 	Legend,
 	ResponsiveContainer,
+	Tooltip,
+	XAxis,
 } from "recharts";
 
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";

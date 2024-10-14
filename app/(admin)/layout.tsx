@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
-import { getAuth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { SideBar } from "@/components/side-bar";
 import { Header } from "@/components/header";
+import { SideBar } from "@/components/side-bar";
+import { getAuth } from "@/lib/auth";
 import { menuLink } from "@/lib/constants";
+import { redirect } from "next/navigation";
+import type { ReactNode } from "react";
 
 export default async function ({ children }: { children: ReactNode }) {
 	const { user } = await getAuth();

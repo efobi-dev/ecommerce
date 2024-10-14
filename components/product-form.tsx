@@ -1,37 +1,37 @@
 "use client";
 
+import { getCategories } from "@/actions/category";
+import { addProduct } from "@/actions/product";
+import { useToast } from "@/hooks/use-toast";
+import type { Category, Product } from "@/lib/constants";
+import { productSchema } from "@/prisma/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle, Plus } from "lucide-react";
+import { nanoid } from "nanoid";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { ProductUpload } from "./product-upload";
+import { Button, buttonVariants } from "./ui/button";
 import {
 	Dialog,
-	DialogTrigger,
-	DialogContent,
-	DialogTitle,
-	DialogDescription,
-	DialogHeader,
-	DialogFooter,
 	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "./ui/dialog";
-import { Plus, LoaderCircle } from "lucide-react";
-import { Button, buttonVariants } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { useState, useTransition } from "react";
 import { Form, FormField } from "./ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
-import { addProduct } from "@/actions/product";
-import { getCategories } from "@/actions/category";
-import type { Product, Category } from "@/lib/constants";
-import { productSchema } from "@/prisma/zod";
-import { nanoid } from "nanoid";
+import { Input } from "./ui/input";
 import {
 	Select,
 	SelectContent,
-	SelectTrigger,
 	SelectItem,
+	SelectTrigger,
 	SelectValue,
 } from "./ui/select";
-import { ProductUpload } from "./product-upload";
+import { Textarea } from "./ui/textarea";
 
 export function ProductForm() {
 	const { toast } = useToast();

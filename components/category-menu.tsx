@@ -1,21 +1,21 @@
 "use client";
 
+import { deleteCategory } from "@/actions/category";
+import { useToast } from "@/hooks/use-toast";
+import type { Category } from "@/lib/constants";
+import { LoaderCircle } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
 import {
 	DropdownMenu,
-	DropdownMenuTrigger,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuPortal,
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
-	DropdownMenuPortal,
+	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
-import { deleteCategory } from "@/actions/category";
-import { LoaderCircle } from "lucide-react";
-import type { Category } from "@/lib/constants";
 
 export function CategoryMenu({ values }: { values: Category[] }) {
 	const { toast } = useToast();

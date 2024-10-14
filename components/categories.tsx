@@ -1,4 +1,6 @@
 import prisma from "@/lib/db";
+import { CategoryForm } from "./category-form";
+import { CategoryMenu } from "./category-menu";
 import {
 	Card,
 	CardContent,
@@ -6,8 +8,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
-import { CategoryForm } from "./category-form";
-import { CategoryMenu } from "./category-menu";
 
 export async function CategoriesCard() {
 	const categories = await prisma.category.findMany();

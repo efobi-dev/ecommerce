@@ -1,14 +1,14 @@
 "use client";
 
-import { Form, FormField } from "./ui/form";
+import { getStore, updateStore } from "@/actions/store";
 import { useToast } from "@/hooks/use-toast";
-import { useForm } from "react-hook-form";
-import { Input } from "./ui/input";
+import type { Store } from "@/lib/constants";
+import { storeSchema } from "@/prisma/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
-import { storeSchema } from "@/prisma/zod";
-import type { Store } from "@/lib/constants";
-import { TabsContent } from "./ui/tabs";
+import { useForm } from "react-hook-form";
+import { Button } from "./ui/button";
 import {
 	Card,
 	CardContent,
@@ -16,10 +16,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { getStore, updateStore } from "@/actions/store";
-import { Button } from "./ui/button";
+import { Form, FormField } from "./ui/form";
+import { Input } from "./ui/input";
 import { Switch } from "./ui/switch";
+import { TabsContent } from "./ui/tabs";
 
 export function StoreForm() {
 	const { toast } = useToast();

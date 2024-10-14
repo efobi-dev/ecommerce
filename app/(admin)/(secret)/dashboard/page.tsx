@@ -1,8 +1,8 @@
-import { TotalOrders } from "@/components/total-order";
-import { NewUsers } from "@/components/new-users";
-import { TotalRevenue } from "@/components/total-revenue";
 import { AverageOrder } from "@/components/average-order";
+import { NewUsers } from "@/components/new-users";
 import { RecentOrders } from "@/components/recent-orders";
+import { TotalOrders } from "@/components/total-order";
+import { TotalRevenue } from "@/components/total-revenue";
 
 export default function Dashboard() {
 	return (

@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
-import { DataTable } from "./ui/data-table";
 import { orderColumns } from "./order-column";
+import { DataTable } from "./ui/data-table";
 
 export async function OrderTable() {
 	const orders = await prisma.order.findMany();

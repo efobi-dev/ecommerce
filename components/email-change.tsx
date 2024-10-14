@@ -1,15 +1,15 @@
 "use client";
 
+import { changeEmail } from "@/actions/auth";
+import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "./ui/button";
 import { Form, FormField } from "./ui/form";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { LoaderCircle } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { changeEmail } from "@/actions/auth";
 
 export function EmailChange({ email }: { email: string }) {
 	const { toast } = useToast();

@@ -1,12 +1,12 @@
 "use client";
 
-import { X } from "lucide-react";
-import { Button } from "./ui/button";
-import { useSidebarStore } from "../lib/store";
 import type { Menu } from "@/lib/constants";
-import Link from "next/link";
+import { X } from "lucide-react";
 import * as LucideIcons from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSidebarStore } from "../lib/store";
+import { Button } from "./ui/button";
 
 export function SideBar({ menu }: { menu: Menu[] }) {
 	const { toggle, isOpen } = useSidebarStore();

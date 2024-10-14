@@ -5,8 +5,8 @@ import {
 	BarChart,
 	CartesianGrid,
 	LabelList,
-	XAxis,
 	Tooltip,
+	XAxis,
 } from "recharts";
 
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";

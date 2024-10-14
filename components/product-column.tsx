@@ -1,19 +1,19 @@
 "use client";
 
+import { updateAvailability } from "@/actions/product";
+import { useToast } from "@/hooks/use-toast";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, LoaderCircle } from "lucide-react";
+import { ArrowUpDown, LoaderCircle, MoreHorizontal } from "lucide-react";
+import { useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import {
 	DropdownMenu,
-	DropdownMenuTrigger,
 	DropdownMenuContent,
-	DropdownMenuLabel,
 	DropdownMenuItem,
+	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { updateAvailability } from "@/actions/product";
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
 
 export type Product = {
 	id: string;

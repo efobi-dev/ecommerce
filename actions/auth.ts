@@ -2,10 +2,10 @@
 
 import { getAuth } from "@/lib/auth";
 import {
-	signInSchema,
-	signUpSchema,
 	type SignIn,
 	type SignUp,
+	signInSchema,
+	signUpSchema,
 } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { lucia } from "@/lib/lucia";

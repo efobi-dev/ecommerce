@@ -1,7 +1,7 @@
 "use server";
 
-import prisma from "@/lib/db";
 import { getAuth } from "@/lib/auth";
+import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 export async function getCategories() {

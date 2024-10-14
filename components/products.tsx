@@ -1,7 +1,7 @@
 import prisma from "@/lib/db";
-import { ProductsChart } from "./products-chart";
-import { DataTable } from "./ui/data-table";
+import { CategoriesCard } from "./categories";
 import { productColumns } from "./product-column";
+import { ProductsChart } from "./products-chart";
 import {
 	Card,
 	CardContent,
@@ -9,7 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
-import { CategoriesCard } from "./categories";
+import { DataTable } from "./ui/data-table";
 
 export async function Product() {
 	const [products, orderItems] = await Promise.all([

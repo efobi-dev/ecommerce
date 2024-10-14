@@ -1,9 +1,9 @@
 "use server";
 
-import prisma from "@/lib/db";
-import type { Product, ProductImage } from "@/lib/constants";
 import { getAuth } from "@/lib/auth";
-import { productSchema, productImageSchema } from "@/prisma/zod";
+import type { Product, ProductImage } from "@/lib/constants";
+import prisma from "@/lib/db";
+import { productImageSchema, productSchema } from "@/prisma/zod";
 import { revalidatePath } from "next/cache";
 
 export async function addProduct(values: Product) {

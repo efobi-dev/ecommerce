@@ -1,19 +1,19 @@
 "use client";
 
+import { signOut } from "@/actions/auth";
+import { useSidebarStore } from "@/lib/store";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
 import {
 	DropdownMenu,
-	DropdownMenuTrigger,
 	DropdownMenuContent,
+	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuItem,
+	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Menu } from "lucide-react";
-import { Button } from "./ui/button";
-import { useSidebarStore } from "@/lib/store";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { signOut } from "@/actions/auth";
-import Link from "next/link";
 
 export function Header({ email }: { email: string }) {
 	const { toggle } = useSidebarStore();

@@ -2,11 +2,11 @@ import prisma from "@/lib/db";
 import { Card, CardContent } from "./ui/card";
 import {
 	Table,
-	TableHeader,
-	TableRow,
-	TableHead,
 	TableBody,
 	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
 } from "./ui/table";
 
 export async function RecentOrders() {

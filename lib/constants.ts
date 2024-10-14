@@ -1,13 +1,13 @@
-import { z } from "zod";
 import type {
-	customerSchema,
-	orderSchema,
-	orderItemSchema,
-	productSchema,
 	categorySchema,
+	customerSchema,
+	orderItemSchema,
+	orderSchema,
 	productImageSchema,
+	productSchema,
 	storeSchema,
 } from "@/prisma/zod";
+import { z } from "zod";
 
 export type SignIn = z.infer<typeof signInSchema>;
 export type SignUp = z.infer<typeof signUpSchema>;

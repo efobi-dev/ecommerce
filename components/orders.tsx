@@ -1,5 +1,3 @@
-import prisma from "@/lib/db";
-import { TrendingUp, TrendingDown } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -8,6 +6,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import prisma from "@/lib/db";
+import { TrendingDown, TrendingUp } from "lucide-react";
 import { OrderChart } from "./orders-chart";
 
 export async function Orders() {

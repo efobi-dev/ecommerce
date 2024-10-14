@@ -1,23 +1,23 @@
 "use client";
 
+import { addCategory } from "@/actions/category";
+import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle, PlusCircle } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "./ui/button";
 import {
 	Dialog,
-	DialogTrigger,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Form, FormField } from "./ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { LoaderCircle, PlusCircle } from "lucide-react";
-import { addCategory } from "@/actions/category";
+import { Input } from "./ui/input";
 
 const schema = z.object({
 	name: z.string(),

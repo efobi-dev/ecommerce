@@ -1,19 +1,19 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { Form, FormField } from "./ui/form";
-import type { ProductImage } from "@/lib/constants";
-import { productImageSchema } from "@/prisma/zod";
-import { useState, useTransition } from "react";
-import { nanoid } from "nanoid";
-import { UploadDropzone } from "@/lib/uploadthing";
-import { LoaderCircle } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { addProductImage } from "@/actions/product";
 import { useToast } from "@/hooks/use-toast";
+import type { ProductImage } from "@/lib/constants";
+import { UploadDropzone } from "@/lib/uploadthing";
+import { productImageSchema } from "@/prisma/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
+import { nanoid } from "nanoid";
 import Image from "next/image";
-import { Input } from "./ui/input";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
+import { Form, FormField } from "./ui/form";
+import { Input } from "./ui/input";
 
 export function ProductUpload({ productId }: { productId: string }) {
 	const { toast } = useToast();

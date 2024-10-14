@@ -1,6 +1,6 @@
-import { Users } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import prisma from "@/lib/db";
+import { Users } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export async function TotalOrders() {
 	const currentDate = new Date();

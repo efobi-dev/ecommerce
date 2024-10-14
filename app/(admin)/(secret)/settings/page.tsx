@@ -1,16 +1,16 @@
+import { EmailChange } from "@/components/email-change";
+import { NameChange } from "@/components/name-change";
+import { PasswordChange } from "@/components/password-change";
+import { StoreForm } from "@/components/store-form";
 import {
 	Card,
+	CardContent,
+	CardDescription,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardContent,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuth } from "@/lib/auth";
-import { NameChange } from "@/components/name-change";
-import { EmailChange } from "@/components/email-change";
-import { PasswordChange } from "@/components/password-change";
-import { StoreForm } from "@/components/store-form";
 
 export default async function Page() {
 	const tabList = [
