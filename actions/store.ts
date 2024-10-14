@@ -12,11 +12,11 @@ const storeId = process.env.NEXT_PUBLIC_STORE_ID;
 export async function getStore() {
 	return await cache(
 		async () => {
-			const response = await prisma.store.findFirst({
+			const response = await prisma.store.findUnique({
 				where: { id: storeId },
 			});
 			if (!response) throw new Error("Store not found");
-			return response;
+			return storeSchema.parse(response);
 		},
 		["store"],
 		{
@@ -29,7 +29,7 @@ export async function getStore() {
 export async function updateStore(values: Store) {
 	try {
 		const { user } = await getAuth();
-		if (user?.role === "Superadmin") return { error: "Unauthorized" };
+		if (user?.role !== "Superadmin") return { error: "Unauthorized" };
 		const { data, error } = await storeSchema.safeParseAsync(values);
 		if (error) return { error: error.issues[0].message };
 		const response = await prisma.store.update({

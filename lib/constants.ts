@@ -6,6 +6,7 @@ import type {
 	productImageSchema,
 	productSchema,
 	storeSchema,
+	userSchema,
 } from "@/prisma/zod";
 import { z } from "zod";
 
@@ -18,6 +19,7 @@ export type Product = z.infer<typeof productSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type ProductImage = z.infer<typeof productImageSchema>;
 export type Store = z.infer<typeof storeSchema>;
+export type User = Omit<z.infer<typeof userSchema>, "hashedPassword">;
 
 export interface Menu {
 	name: string;
@@ -48,6 +50,7 @@ export const signUpSchema = z.object({
 		.min(8, "Password must be more than 8 characters")
 		.max(32, "Password must be less than 32 characters"),
 	fullName: z.string().min(8),
+	role: z.enum(["User", "Admin", "Superadmin"]).default("User"),
 });
 
 export const menuLink: Menu[] = [

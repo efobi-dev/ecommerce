@@ -11,13 +11,15 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuth } from "@/lib/auth";
+import { UserTab } from "@/components/user-tab";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default async function Page() {
 	const tabList = [
 		{ name: "Profile", value: "profile" },
 		{ name: "Store settings", value: "store" },
 		{ name: "User management", value: "users" },
-		{ name: "System configuration", value: "system" },
+		// { name: "System configuration", value: "system" },
 	];
 	const { user } = await getAuth();
 	if (user?.role !== "Superadmin") {
@@ -38,11 +40,14 @@ export default async function Page() {
 					</TabsList>
 					<TabsContent value="profile">
 						<Card>
-							<CardHeader>
-								<CardTitle>Profile Information</CardTitle>
-								<CardDescription>
-									Update your profile details here.
-								</CardDescription>
+							<CardHeader className="flex flex-row items-center justify-between gap-4">
+								<div className="flex flex-col">
+									<CardTitle>Profile Information</CardTitle>
+									<CardDescription>
+										Update your profile details here.
+									</CardDescription>
+								</div>
+								<ThemeToggle />
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<NameChange name={user.fullName} />
@@ -52,6 +57,7 @@ export default async function Page() {
 						</Card>
 					</TabsContent>
 					<StoreForm />
+					<UserTab />
 				</Tabs>
 			</div>
 		</main>

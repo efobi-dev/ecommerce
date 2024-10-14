@@ -9,6 +9,7 @@ export default async function ({ children }: { children: ReactNode }) {
 	const { user } = await getAuth();
 
 	if (!user) redirect("/login");
+	if (user.role === "User") redirect("/");
 
 	const routes = menuLink.filter((p) => {
 		if (user.role === "Admin") {
@@ -20,7 +21,6 @@ export default async function ({ children }: { children: ReactNode }) {
 	return (
 		<div className="flex h-screen overflow-hidden">
 			<SideBar menu={routes} />
-
 			<div className="flex flex-1 flex-col overflow-hidden">
 				<Header email={user.email} />
 				{children}

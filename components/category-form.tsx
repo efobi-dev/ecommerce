@@ -64,8 +64,8 @@ export function CategoryForm() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant={"outline"}>
-					<PlusCircle className="mr-2 h-4 w-4 text-foreground" />
+				<Button size={"icon"} variant={"outline"}>
+					<PlusCircle className="h-4 w-4 text-foreground" />
 				</Button>
 			</DialogTrigger>
 			<DialogContent>

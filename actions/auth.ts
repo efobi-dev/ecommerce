@@ -4,12 +4,14 @@ import { getAuth } from "@/lib/auth";
 import {
 	type SignIn,
 	type SignUp,
+	type User,
 	signInSchema,
 	signUpSchema,
 } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { lucia } from "@/lib/lucia";
 import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
@@ -18,7 +20,7 @@ export async function signUp(values: SignUp) {
 	try {
 		const { data, error } = await signUpSchema.safeParseAsync(values);
 		if (error) return { error: "Invalid body received" };
-		const { email, password, fullName } = data;
+		const { email, password, fullName, role } = data;
 		const hashedPassword = await new Argon2id().hash(password);
 		const userId = generateId(10);
 
@@ -27,7 +29,7 @@ export async function signUp(values: SignUp) {
 				id: userId,
 				email,
 				hashedPassword,
-				role: "Admin",
+				role,
 				fullName,
 			},
 		});
@@ -150,5 +152,63 @@ export async function changeName(name: string) {
 	} catch (error) {
 		console.error(error);
 		return { error: "Internal server error" };
+	}
+}
+
+export async function createAdmin(values: SignUp) {
+	try {
+		const { user } = await getAuth();
+		if (user?.role !== "Superadmin") return { error: "Unauthorized" };
+		const { data, error } = await signUpSchema.safeParseAsync(values);
+		if (error) return { error: "Invalid credentials" };
+		const { email, password, role, fullName } = data;
+		const hashedPassword = await new Argon2id().hash(password);
+		const userId = generateId(10);
+
+		const response = await prisma.user.create({
+			data: {
+				id: userId,
+				email,
+				hashedPassword,
+				role,
+				fullName,
+			},
+		});
+		if (!response) return { error: "User creation failed" };
+		return { success: true, message: "User created successfully" };
+	} catch (error) {
+		console.error(error);
+		return { error: "Something went wrong" };
+	}
+}
+
+export async function updateAdmin(values: User) {
+	try {
+		const { user } = await getAuth();
+		if (user?.role !== "Superadmin") return { error: "Unauthorized operation" };
+		const response = await prisma.user.update({
+			where: { id: values.id },
+			data: values,
+		});
+		if (!response) return { error: "User update failed" };
+		revalidatePath("/settings");
+		return { success: true, message: "User updated successfully" };
+	} catch (error) {
+		console.error(error);
+		return { error: "Something went wrong" };
+	}
+}
+
+export async function deleteAdmin(id: string) {
+	try {
+		const { user } = await getAuth();
+		if (user?.role !== "Superadmin") return { error: "Unauthorized operation" };
+		const response = await prisma.user.delete({ where: { id } });
+		if (!response) return { error: "User delete failed" };
+		revalidatePath("/settings");
+		return { success: true, message: "User deleted successfully" };
+	} catch (error) {
+		console.error(error);
+		return { error: "Something went wrong" };
 	}
 }

@@ -6,7 +6,7 @@ import type { Store } from "@/lib/constants";
 import { storeSchema } from "@/prisma/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import {
@@ -34,17 +34,34 @@ export function StoreForm() {
 			maintenance: store?.maintenance,
 		},
 	});
+
+	useEffect(() => {
+		loadStore();
+	}, []);
+
+	useEffect(() => {
+		if (store) {
+			form.reset({
+				id: store.id,
+				name: store.name,
+				url: store.url,
+				maintenance: store.maintenance,
+			});
+		}
+	}, [store, form]);
+
 	const loadStore = async () => {
-		const store = await getStore();
-		if (!store) {
+		const storeData = await getStore();
+		if (!storeData) {
 			toast({
 				title: "Failed to load store",
 				description: "Please reload the page and try again.",
 				variant: "destructive",
 			});
 		}
-		setStore(store);
+		setStore(storeData);
 	};
+
 	const submit = async (values: Store) => {
 		setPending(true);
 		try {
@@ -72,8 +89,9 @@ export function StoreForm() {
 			setPending(false);
 		}
 	};
+
 	return (
-		<TabsContent value="store" onClick={() => loadStore()}>
+		<TabsContent value="store">
 			<Card>
 				<CardHeader>
 					<CardTitle>Store configuration</CardTitle>
@@ -109,7 +127,7 @@ export function StoreForm() {
 										/>
 									)}
 								/>
-								<Button type="submit">
+								<Button type="submit" disabled={pending}>
 									{pending ? (
 										<LoaderCircle className="animate-spin w-4 h-4" />
 									) : (
