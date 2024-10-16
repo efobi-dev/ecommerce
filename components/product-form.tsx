@@ -164,7 +164,7 @@ export function ProductForm() {
 								<FormField
 									name="basePrice"
 									control={form.control}
-									label="Product price"
+									label="Product price in kobo"
 									render={({ field }) => (
 										<Input
 											type="number"

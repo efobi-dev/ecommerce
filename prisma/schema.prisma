@@ -83,15 +83,15 @@ model Order {
 }
 
 model OrderItem {
-  id               String         @id @default(cuid())
-  order            Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  id               String          @id @default(cuid())
+  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId          String
-  product          Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product          Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId        String
-  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
-  productVariantId String
+  productVariant   ProductVariant? @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  productVariantId String?
   quantity         Int
-  price            Decimal        @db.Decimal(10, 2)
+  price            Decimal         @db.Decimal(10, 2)
 }
 
 model User {

@@ -4,9 +4,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const geistMono = localFont({
-	src: "../assets/fonts/GeistMonoVF.woff",
-	weight: "100 900",
+const body = localFont({
+	src: "../assets/fonts/body.ttf",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +21,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistMono.className} antialiased`}
+				className={`${body.className} antialiased`}
 				suppressHydrationWarning
 			>
 				<ThemeProvider

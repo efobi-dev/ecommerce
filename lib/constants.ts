@@ -20,6 +20,7 @@ export type Category = z.infer<typeof categorySchema>;
 export type ProductImage = z.infer<typeof productImageSchema>;
 export type Store = z.infer<typeof storeSchema>;
 export type User = Omit<z.infer<typeof userSchema>, "hashedPassword">;
+export type Cart = z.infer<typeof cartSchema>;
 
 export interface Menu {
 	name: string;
@@ -51,6 +52,13 @@ export const signUpSchema = z.object({
 		.max(32, "Password must be less than 32 characters"),
 	fullName: z.string().min(8),
 	role: z.enum(["User", "Admin", "Superadmin"]).default("User"),
+});
+
+export const cartSchema = z.object({
+	id: z.string(), //product id
+	name: z.string(),
+	price: z.number().min(0),
+	quantity: z.number().min(1).default(1),
 });
 
 export const menuLink: Menu[] = [
