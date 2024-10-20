@@ -13,6 +13,7 @@ import { ChartSkeleton } from "./loaders/chart";
 
 export async function Orders() {
 	const orders = await prisma.order.findMany();
+	if (!orders.length) return <ChartSkeleton />;
 	const chartData = orders.reduce<Record<string, number>>((acc, order) => {
 		const month = new Date(order.createdAt).toLocaleString("default", {
 			month: "long",
