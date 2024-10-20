@@ -9,7 +9,7 @@ export default async function ({ children }: { children: ReactNode }) {
 	const { user } = await getAuth();
 
 	if (!user) redirect("/login");
-	if (user.role === "User") redirect("/");
+	if (user.role === "User") redirect("/checkout");
 
 	const routes = menuLink.filter((p) => {
 		if (user.role === "Admin") {

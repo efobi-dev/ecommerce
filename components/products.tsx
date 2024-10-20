@@ -12,44 +12,14 @@ import {
 import { DataTable } from "./ui/data-table";
 
 export async function Product() {
-	const [products, orderItems] = await Promise.all([
+	const [products, orders] = await Promise.all([
 		prisma.product.findMany(),
-		prisma.orderItem.findMany({
-			include: {
-				order: {
-					select: {
-						createdAt: true,
-					},
-				},
-			},
-		}),
+		prisma.order.findMany(),
 	]);
 
-	const chartData = products.map((product) => {
-		const productOrders = orderItems.filter(
-			(item) => item.productId === product.id,
-		);
-		const ordersByYear = productOrders.reduce<Record<number, number>>(
-			(acc, item) => {
-				const year = new Date(item.order.createdAt).getFullYear();
-				acc[year] = (acc[year] || 0) + 1;
-				return acc;
-			},
-			{},
-		);
-
-		return {
-			productName: product.name,
-			orderData: Object.entries(ordersByYear).map(([year, count]) => ({
-				year: Number.parseInt(year),
-				totalOrders: count,
-			})),
-		};
-	});
-
 	const data = products.map((product) => {
-		const totalOrders = orderItems.filter(
-			(item) => item.productId === product.id,
+		const totalOrders = orders.filter(
+			(order) => order.productId === product.id,
 		).length;
 		return {
 			id: product.id,
@@ -57,6 +27,30 @@ export async function Product() {
 			available: product.available,
 			basePrice: Number(product.basePrice),
 			totalOrders: totalOrders,
+		};
+	});
+
+	const chartData = products.map((product) => {
+		const productOrders = orders.filter(
+			(order) => order.productId === product.id,
+		);
+		const totalOrders = productOrders.length;
+		const orderData = Array.from({ length: 5 }, (_, i) => {
+			const year = new Date().getFullYear() - i;
+			const yearOrders = productOrders.filter(
+				(order) => new Date(order.createdAt).getFullYear() === year,
+			);
+			return {
+				year,
+				totalOrders: yearOrders.length,
+			};
+		});
+
+		return {
+			name: product.name,
+			totalOrders,
+			productName: product.name,
+			orderData,
 		};
 	});
 

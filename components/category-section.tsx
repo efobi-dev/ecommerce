@@ -1,10 +1,9 @@
-"use client";
-
-import type { Category } from "@/lib/constants";
+import prisma from "@/lib/db";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardHeader, CardTitle } from "./ui/card";
 
-export function CategorySection({ categories }: { categories: Category[] }) {
+export async function CategorySection() {
+	const categories = await prisma.category.findMany();
 	return (
 		<section className="w-full py-8">
 			<h2 className="text-2xl font-semibold mb-4">Categories</h2>

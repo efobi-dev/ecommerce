@@ -1,7 +1,6 @@
 import type {
 	categorySchema,
 	customerSchema,
-	orderItemSchema,
 	orderSchema,
 	productImageSchema,
 	productSchema,
@@ -14,13 +13,16 @@ export type SignIn = z.infer<typeof signInSchema>;
 export type SignUp = z.infer<typeof signUpSchema>;
 export type Order = z.infer<typeof orderSchema>;
 export type Customer = z.infer<typeof customerSchema>;
-export type OrderItem = z.infer<typeof orderItemSchema>;
 export type Product = z.infer<typeof productSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type ProductImage = z.infer<typeof productImageSchema>;
 export type Store = z.infer<typeof storeSchema>;
 export type User = Omit<z.infer<typeof userSchema>, "hashedPassword">;
 export type Cart = z.infer<typeof cartSchema>;
+export interface PartialProduct extends Product {
+	category: Category;
+	images: ProductImage[];
+}
 
 export interface Menu {
 	name: string;

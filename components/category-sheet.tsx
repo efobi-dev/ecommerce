@@ -1,37 +1,45 @@
+import type { Category } from "@/lib/constants";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import { SearchInput } from "./search";
+import { Button } from "./ui/button";
+import { ScrollArea } from "./ui/scroll-area";
 import {
 	Sheet,
 	SheetContent,
+	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-	SheetHeader,
 } from "./ui/sheet";
-import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
-import type { Category } from "@/lib/constants";
-import { ScrollArea } from "./ui/scroll-area";
-import Link from "next/link";
-import { SearchInput } from "./search";
 
 export function CategorySheet({ categories }: { categories: Category[] }) {
 	return (
 		<Sheet>
 			<SheetTrigger asChild className="md:hidden">
-				<Button size={"icon"} variant={"outline"}>
-					<Menu />
+				<Button size="icon" variant="outline">
+					<Menu className="h-5 w-5" />
 				</Button>
 			</SheetTrigger>
-			<SheetContent>
+			<SheetContent side="left" className="w-[300px] sm:w-[400px]">
 				<SheetHeader>
-					<SheetTitle>Categories</SheetTitle>
-					<SearchInput />
+					<SheetTitle className="text-2xl font-bold">Categories</SheetTitle>
+					<SearchInput className="mt-4" />
 				</SheetHeader>
-				<ScrollArea className="py-4">
-					<Link href="/search">All</Link>
-					{categories.map((route) => (
-						<Link key={route.id} href={`/search/${route.name.toLowerCase()}`}>
-							{route.name}
+				<ScrollArea className="mt-6 h-[calc(100vh-180px)]">
+					<div className="flex flex-col space-y-2">
+						<Link href="/search" className="px-4 py-2 rounded-md">
+							All
 						</Link>
-					))}
+						{categories.map((route) => (
+							<Link
+								key={route.id}
+								href={`/search/${route.name}`}
+								className="px-4 py-2 rounded-md"
+							>
+								{route.name}
+							</Link>
+						))}
+					</div>
 				</ScrollArea>
 			</SheetContent>
 		</Sheet>

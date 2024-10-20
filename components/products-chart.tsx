@@ -24,11 +24,10 @@ export function ProductsChart({
 	chartData,
 }: {
 	chartData: {
+		name: string;
+		totalOrders: number;
 		productName: string;
-		orderData: {
-			year: number;
-			totalOrders: number;
-		}[];
+		orderData: { year: number; totalOrders: number }[];
 	}[];
 }) {
 	const formattedData = chartData.flatMap(({ productName, orderData }) =>
@@ -39,7 +38,7 @@ export function ProductsChart({
 	);
 
 	const mergedData = formattedData.reduce(
-		(acc, curr) => {
+		(acc: { year: number; [key: string]: number }[], curr) => {
 			const existingEntry = acc.find((item) => item.year === curr.year);
 			if (existingEntry) {
 				Object.assign(existingEntry, curr);
@@ -48,7 +47,7 @@ export function ProductsChart({
 			}
 			return acc;
 		},
-		[] as { year: number; [key: string]: number }[],
+		[],
 	);
 
 	const sortedData = mergedData.sort((a, b) => a.year - b.year);

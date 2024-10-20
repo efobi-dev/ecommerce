@@ -94,7 +94,7 @@ export function ProductForm() {
 					});
 					return;
 				}
-				setStep(step + 1);
+				setStep((prev) => prev + 1);
 				toast({
 					title: "Product added successfully",
 					description: "You can now upload images for this product",
@@ -164,7 +164,7 @@ export function ProductForm() {
 								<FormField
 									name="basePrice"
 									control={form.control}
-									label="Product price in kobo"
+									label="Product price in naira"
 									render={({ field }) => (
 										<Input
 											type="number"

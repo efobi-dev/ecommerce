@@ -12,6 +12,11 @@ export const useSidebarStore = create<SidebarState>((set) => ({
 	toggle: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
+export const useCartState = create<SidebarState>((set) => ({
+	isOpen: false,
+	toggle: () => set((state) => ({ isOpen: !state.isOpen })),
+}));
+
 interface Store {
 	cart: Cart[] | null;
 	emptyCart: () => void;

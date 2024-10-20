@@ -14,11 +14,7 @@ export async function RecentOrders() {
 		take: 5,
 		include: {
 			customer: true,
-			orderItems: {
-				include: {
-					product: true,
-				},
-			},
+			product: true,
 		},
 	});
 	return (
@@ -39,9 +35,7 @@ export async function RecentOrders() {
 							<TableRow key={order.id}>
 								<TableCell>#{order.id}</TableCell>
 								<TableCell>{order.customer.name}</TableCell>
-								<TableCell>
-									{order.orderItems[0]?.product.name || "N/A"}
-								</TableCell>
+								<TableCell>{order.product.name}</TableCell>
 								<TableCell>
 									{new Date(order.createdAt).toLocaleString()}
 								</TableCell>

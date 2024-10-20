@@ -34,6 +34,33 @@ export async function signUp(values: SignUp) {
 			},
 		});
 
+		// Check if there's an existing customer with the same email
+		const existingCustomer = await prisma.customer.findUnique({
+			where: { userId },
+		});
+
+		if (existingCustomer) {
+			// If a customer exists, link them to the new user account
+			await prisma.customer.update({
+				where: { userId },
+				data: {
+					name: fullName,
+					email,
+				},
+			});
+		} else {
+			// If no customer exists, create a new one linked to the user
+			await prisma.customer.create({
+				data: {
+					userId,
+					name: fullName,
+					email,
+					phone: "",
+					address: "",
+				},
+			});
+		}
+
 		const session = await lucia.createSession(userId, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);
 
@@ -48,7 +75,6 @@ export async function signUp(values: SignUp) {
 		return { error: "Internal server error" };
 	}
 }
-
 export async function signIn(values: SignIn) {
 	try {
 		const { data, error } = await signInSchema.safeParseAsync(values);

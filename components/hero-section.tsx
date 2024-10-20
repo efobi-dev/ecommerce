@@ -1,17 +1,17 @@
 "use client";
 
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "./ui/button";
 import {
 	Card,
 	CardContent,
+	CardDescription,
 	CardHeader,
 	CardTitle,
-	CardDescription,
 } from "./ui/card";
-import { Button } from "./ui/button";
-import Link from "next/link";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 const images = [
 	"/images/bulb-light.jpg",

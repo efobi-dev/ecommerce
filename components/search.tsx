@@ -1,9 +1,9 @@
 "use client";
 
-import { Input } from "./ui/input";
-import { useDebouncedCallback } from "use-debounce";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
+import { Input } from "./ui/input";
 
 export function SearchInput({ className }: { className?: string }) {
 	const router = useRouter();
