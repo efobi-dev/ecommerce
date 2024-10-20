@@ -9,6 +9,7 @@ import {
 import prisma from "@/lib/db";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { OrderChart } from "./orders-chart";
+import { ChartSkeleton } from "./loaders/chart";
 
 export async function Orders() {
 	const orders = await prisma.order.findMany();
@@ -40,7 +41,7 @@ export async function Orders() {
 	const latestPercentageChange =
 		formattedChartData[formattedChartData.length - 1].percentageChange;
 
-	return (
+	return orders ? (
 		<Card>
 			<CardHeader>
 				<CardTitle>Monthly Sales Overview</CardTitle>
@@ -68,5 +69,7 @@ export async function Orders() {
 				</div>
 			</CardFooter>
 		</Card>
+	) : (
+		<ChartSkeleton />
 	);
 }

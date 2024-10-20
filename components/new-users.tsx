@@ -1,6 +1,7 @@
 import prisma from "@/lib/db";
 import { CreditCard } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { CardSkeleton } from "./loaders/card";
 
 export async function NewUsers() {
 	const currentDate = new Date();
@@ -32,7 +33,7 @@ export async function NewUsers() {
 			? ((currentMonthUsers - lastMonthUsers) / lastMonthUsers) * 100
 			: 100;
 
-	return (
+	return currentMonthUsers !== null ? (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<CardTitle className="text-sm font-medium">New Customers</CardTitle>
@@ -46,5 +47,7 @@ export async function NewUsers() {
 				</p>
 			</CardContent>
 		</Card>
+	) : (
+		<CardSkeleton title={"New Customers"} icon={<CreditCard />} />
 	);
 }

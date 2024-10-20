@@ -1,6 +1,7 @@
 import prisma from "@/lib/db";
 import { DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { CardSkeleton } from "./loaders/card";
 
 export async function AverageOrder() {
 	const currentMonth = new Date().getMonth();
@@ -40,7 +41,7 @@ export async function AverageOrder() {
 				100
 			: 0;
 
-	return (
+	return currentAverageValue ? (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<CardTitle className="text-sm font-medium">
@@ -61,5 +62,7 @@ export async function AverageOrder() {
 				</p>
 			</CardContent>
 		</Card>
+	) : (
+		<CardSkeleton title="Average Order Value" icon={<DollarSign />} />
 	);
 }

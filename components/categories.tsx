@@ -8,11 +8,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
+import { CardSkeleton } from "./loaders/card";
+import { PlusIcon } from "lucide-react";
 
 export async function CategoriesCard() {
 	const categories = await prisma.category.findMany();
 
-	return (
+	return categories ? (
 		<Card className="h-full">
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<CardTitle className="text-lg font-semibold">Categories</CardTitle>
@@ -30,5 +32,7 @@ export async function CategoriesCard() {
 				<CategoryMenu values={categories} />
 			</CardContent>
 		</Card>
+	) : (
+		<CardSkeleton title="Categories" icon={<PlusIcon />} />
 	);
 }

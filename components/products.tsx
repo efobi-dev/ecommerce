@@ -10,6 +10,7 @@ import {
 	CardTitle,
 } from "./ui/card";
 import { DataTable } from "./ui/data-table";
+import { Skeleton } from "./ui/skeleton";
 
 export async function Product() {
 	const [products, orders] = await Promise.all([
@@ -54,7 +55,7 @@ export async function Product() {
 		};
 	});
 
-	return (
+	return data ? (
 		<>
 			<Card>
 				<CardHeader>
@@ -73,6 +74,24 @@ export async function Product() {
 			</div>
 			<h2 className="mt-8 text-xl font-semibold">All Products</h2>
 			<DataTable columns={productColumns} data={data} />
+		</>
+	) : (
+		<>
+			<Card>
+				<CardHeader>
+					<Skeleton className="h-8 w-3/4" />
+					<Skeleton className="h-4 w-1/2 mt-2" />
+				</CardHeader>
+				<CardContent>
+					<Skeleton className="h-[300px] w-full" />
+				</CardContent>
+			</Card>
+			<Skeleton className="h-8 w-1/4 mt-8" />
+			<div className="grid gap-4 md:grid-cols-3 mt-4">
+				<Skeleton className="h-[200px]" />
+			</div>
+			<Skeleton className="h-8 w-1/4 mt-8" />
+			<Skeleton className="h-[400px] w-full mt-4" />
 		</>
 	);
 }

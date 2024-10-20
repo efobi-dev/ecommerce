@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/product-card";
 import prisma from "@/lib/db";
 import type { Prisma } from "@prisma/client";
+import { ProductCardLoader } from "@/components/loaders/product-card";
 
 export default async function SearchPage({
 	searchParams,
@@ -31,12 +32,21 @@ export default async function SearchPage({
 				</h1>
 			)}
 			<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-				{products?.map((p) => (
-					<ProductCard
-						p={{ ...p, basePrice: Number(p.basePrice) }}
-						key={p.id}
-					/>
-				))}
+				{products
+					? products.map((p) => (
+							<ProductCard
+								p={{ ...p, basePrice: Number(p.basePrice) }}
+								key={p.id}
+							/>
+						))
+					: new Array(6).fill(null).map((_, index) => (
+							<ProductCardLoader
+								key={`loader-${
+									// biome-ignore lint/suspicious/noArrayIndexKey: need to use the index for this
+									index
+								}`}
+							/>
+						))}
 			</div>
 		</div>
 	);
