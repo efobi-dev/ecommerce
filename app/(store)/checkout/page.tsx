@@ -1,6 +1,11 @@
 import { CustomerForm } from "@/components/customer-form";
 import { getAuth } from "@/lib/auth";
 import prisma from "@/lib/db";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Checkout",
+};
 
 export default async function Page() {
 	const { user } = await getAuth();

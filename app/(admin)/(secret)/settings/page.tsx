@@ -13,6 +13,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserTab } from "@/components/user-tab";
 import { getAuth } from "@/lib/auth";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Settings",
+};
 
 export default async function Page() {
 	const tabList = [

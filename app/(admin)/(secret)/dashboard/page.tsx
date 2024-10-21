@@ -3,8 +3,14 @@ import { NewUsers } from "@/components/new-users";
 import { RecentOrders } from "@/components/recent-orders";
 import { TotalOrders } from "@/components/total-order";
 import { TotalRevenue } from "@/components/total-revenue";
+import type { Metadata } from "next";
 
-export default function Dashboard() {
+export const metadata: Metadata = {
+	title: "Main Dashboard",
+	description: "Overview of store performance metrics",
+};
+
+export default function Page() {
 	return (
 		<main className="flex-1 overflow-y-auto p-4">
 			<h1 className="mb-4 text-2xl font-semibold">Dashboard</h1>

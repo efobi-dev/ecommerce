@@ -1,9 +1,24 @@
 import { ProductCardLoader } from "@/components/loaders/product-card";
 import { ProductCard } from "@/components/product-card";
 import prisma from "@/lib/db";
+import type { Metadata } from "next";
 
-//TODO:fix code errors
+export async function generateMetadata({
+	params,
+}: { params: { name: string } }): Promise<Metadata> {
+	const { name } = params;
+	const category = await prisma.category.findUnique({ where: { name } });
 
+	return {
+		title: `${category?.name} Products`,
+		description: `Browse ${category?.name} products`,
+		openGraph: {
+			type: "website",
+			title: `${category?.name} Products`,
+			description: `Browse ${category?.name} products`,
+		},
+	};
+}
 export default async function Page({ params }: { params: { name: string } }) {
 	const { name } = params;
 	const category = await prisma.category.findUnique({ where: { name } });

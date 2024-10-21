@@ -1,5 +1,10 @@
 import { ProductForm } from "@/components/product-form";
 import { Product } from "@/components/products";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Products",
+};
 
 export default function Page() {
 	return (

@@ -1,6 +1,11 @@
 import { CategoryNav } from "@/components/category-nav";
 import prisma from "@/lib/db";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Search Results",
+};
 
 export default async function SearchLayout({
 	children,

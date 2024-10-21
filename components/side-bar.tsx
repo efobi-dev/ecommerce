@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { useSidebarStore } from "../lib/store";
 import { Button } from "./ui/button";
 
-export function SideBar({ menu }: { menu: Menu[] }) {
+export function SideBar({ menu, name }: { menu: Menu[]; name: string }) {
 	const { toggle, isOpen } = useSidebarStore();
 	const pathname = usePathname();
 	return (
@@ -18,7 +18,7 @@ export function SideBar({ menu }: { menu: Menu[] }) {
 			} fixed inset-y-0 left-0 z-50 w-64 bg-secondary text-accent-foreground transition-transform duration-300 ease-in-out lg:static lg:translate-x-0`}
 		>
 			<div className="flex h-16 items-center justify-between px-4">
-				<span className="text-2xl font-semibold">Something</span>
+				<span className="text-2xl font-semibold">{name}</span>
 				<Button
 					variant="ghost"
 					size="icon"
