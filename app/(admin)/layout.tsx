@@ -1,11 +1,11 @@
+import { getStore } from "@/actions/store";
 import { Header } from "@/components/header";
 import { SideBar } from "@/components/side-bar";
 import { getAuth } from "@/lib/auth";
 import { menuLink } from "@/lib/constants";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
-import { getStore } from "@/actions/store";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Admin",

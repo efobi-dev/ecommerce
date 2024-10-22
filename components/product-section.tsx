@@ -1,12 +1,8 @@
-import prisma from "@/lib/db";
-import { ProductCard } from "./product-card";
+import type { PartialProduct } from "@/lib/constants";
 import { ProductCardLoader } from "./loaders/product-card";
+import { ProductCard } from "./product-card";
 
-export async function ProductSection() {
-	const products = await prisma.product.findMany({
-		take: 6,
-		include: { images: true, category: true },
-	});
+export function ProductSection({ products }: { products?: PartialProduct[] }) {
 	return (
 		<section className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
 			{products

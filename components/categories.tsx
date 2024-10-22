@@ -1,6 +1,8 @@
 import prisma from "@/lib/db";
+import { PlusIcon } from "lucide-react";
 import { CategoryForm } from "./category-form";
 import { CategoryMenu } from "./category-menu";
+import { CardSkeleton } from "./loaders/card";
 import {
 	Card,
 	CardContent,
@@ -8,8 +10,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
-import { CardSkeleton } from "./loaders/card";
-import { PlusIcon } from "lucide-react";
 
 export async function CategoriesCard() {
 	const categories = await prisma.category.findMany();

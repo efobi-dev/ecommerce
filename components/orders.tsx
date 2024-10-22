@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/card";
 import prisma from "@/lib/db";
 import { TrendingDown, TrendingUp } from "lucide-react";
-import { OrderChart } from "./orders-chart";
 import { ChartSkeleton } from "./loaders/chart";
+import { OrderChart } from "./orders-chart";
 
 export async function Orders() {
 	const orders = await prisma.order.findMany();

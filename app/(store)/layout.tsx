@@ -1,7 +1,7 @@
 import { getStore } from "@/actions/store";
 import { StoreNav } from "@/components/store-nav";
-import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
 	title: "%s | Store",

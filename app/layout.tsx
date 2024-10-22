@@ -1,8 +1,8 @@
+import { getStore } from "@/actions/store";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { getStore } from "@/actions/store";
 import "./globals.css";
 
 const body = localFont({

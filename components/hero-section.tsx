@@ -1,5 +1,6 @@
 "use client";
 
+import type { ProductImage } from "@/lib/constants";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,25 +14,17 @@ import {
 } from "./ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 
-const images = [
-	"/images/bulb-light.jpg",
-	"/images/bulb.jpg",
-	"/images/lights-dark.jpg",
-	"/images/circuit.jpg",
-	"/images/macbook.jpg",
-];
-
-export function HeroSection() {
+export function HeroSection({ images }: { images: ProductImage[] }) {
 	return (
 		<section className="relative w-full h-[50vh] min-h-[300px]">
 			<Carousel opts={{ loop: true }} plugins={[Autoplay({ delay: 5000 })]}>
 				<CarouselContent>
 					{images.map((image, index) => (
-						<CarouselItem key={image}>
+						<CarouselItem key={image.id}>
 							<div className="w-full h-[50vh] min-h-[300px] relative">
 								<Image
-									src={image}
-									alt={`Slide ${index + 1}`}
+									src={image.url}
+									alt={image.altText}
 									fill
 									sizes="100vw"
 									priority={index === 0}

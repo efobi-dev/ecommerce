@@ -1,7 +1,7 @@
+import { ProductCardLoader } from "@/components/loaders/product-card";
 import { ProductCard } from "@/components/product-card";
 import prisma from "@/lib/db";
 import type { Prisma } from "@prisma/client";
-import { ProductCardLoader } from "@/components/loaders/product-card";
 
 export default async function SearchPage({
 	searchParams,

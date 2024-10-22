@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
 import type { ReactNode } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
 
 export function CardSkeleton({
 	title,

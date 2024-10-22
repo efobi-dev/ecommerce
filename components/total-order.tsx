@@ -1,7 +1,7 @@
 import prisma from "@/lib/db";
 import { Users } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { CardSkeleton } from "./loaders/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export async function TotalOrders() {
 	const currentDate = new Date();

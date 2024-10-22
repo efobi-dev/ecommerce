@@ -1,7 +1,7 @@
 import { ProductDetails } from "@/components/product-details";
 import prisma from "@/lib/db";
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({
 	params,

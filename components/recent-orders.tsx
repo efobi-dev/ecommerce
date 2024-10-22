@@ -1,4 +1,5 @@
 import prisma from "@/lib/db";
+import { TableSkeleton } from "./loaders/table";
 import { Card, CardContent } from "./ui/card";
 import {
 	Table,
@@ -8,7 +9,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
-import { TableSkeleton } from "./loaders/table";
 
 export async function RecentOrders() {
 	const recentOrders = await prisma.order.findMany({
