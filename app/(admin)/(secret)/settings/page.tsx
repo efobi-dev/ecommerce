@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserTab } from "@/components/user-tab";
-import { getAuth } from "@/lib/auth";
+import { getAuth } from "@/actions/auth";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

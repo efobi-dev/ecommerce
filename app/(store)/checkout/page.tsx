@@ -1,5 +1,5 @@
 import { CustomerForm } from "@/components/customer-form";
-import { getAuth } from "@/lib/auth";
+import { getAuth } from "@/actions/auth";
 import prisma from "@/lib/db";
 import type { Metadata } from "next";
 

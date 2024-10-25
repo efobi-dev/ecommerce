@@ -1,6 +1,6 @@
 "use server";
 
-import { getAuth } from "@/lib/auth";
+import { getAuth } from "@/actions/auth";
 import type { Product, ProductImage } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { productImageSchema, productSchema } from "@/prisma/zod";

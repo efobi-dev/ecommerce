@@ -19,8 +19,10 @@ import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+	const { push } = useRouter();
 	const { toast } = useToast();
 	const [pending, startTransition] = useTransition();
 	const form = useForm<SignIn>({
@@ -34,12 +36,17 @@ export default function Page() {
 	function submit(values: SignIn) {
 		startTransition(async () => {
 			try {
-				const { error } = await signIn(values);
-				toast({
-					title: "Login failed",
-					description: error,
-					variant: "destructive",
-				});
+				const { error, redirectTo } = await signIn(values);
+				if (error) {
+					toast({
+						title: "Login failed",
+						description: error,
+						variant: "destructive",
+					});
+				}
+				if (redirectTo) {
+					push(redirectTo);
+				}
 			} catch (error) {
 				console.error(error);
 				toast({

@@ -1,57 +1,56 @@
 "use server";
 
-import { getAuth } from "@/lib/auth";
 import {
 	type SignIn,
 	type SignUp,
-	type User,
 	signInSchema,
 	signUpSchema,
 } from "@/lib/constants";
 import prisma from "@/lib/db";
-import { lucia } from "@/lib/lucia";
-import { generateId } from "lucia";
+import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
+import {
+	createSession,
+	invalidateSession,
+	deleteSessionTokenCookie,
+	setSessionTokenCookie,
+	validateSessionToken,
+	generateSessionToken,
+	type SessionValidationResult,
+} from "@/lib/session";
+import type { User } from "@prisma/client";
+import { cookies } from "next/headers";
+import { cache } from "react";
 
 export async function signUp(values: SignUp) {
 	try {
 		const { data, error } = await signUpSchema.safeParseAsync(values);
 		if (error) return { error: "Invalid body received" };
 		const { email, password, fullName, role } = data;
-		const hashedPassword = await new Argon2id().hash(password);
-		const userId = generateId(10);
+		const [hashedPassword, userId] = await Promise.all([
+			new Argon2id().hash(password),
+			Promise.resolve(nanoid(10)),
+		]);
 
-		await prisma.user.create({
-			data: {
-				id: userId,
-				email,
-				hashedPassword,
-				role,
-				fullName,
-			},
-		});
-
-		// Check if there's an existing customer with the same email
-		const existingCustomer = await prisma.customer.findUnique({
-			where: { userId },
-		});
-
-		if (existingCustomer) {
-			// If a customer exists, link them to the new user account
-			await prisma.customer.update({
-				where: { userId },
+		await prisma.$transaction(async (tx) => {
+			await tx.user.create({
 				data: {
+					id: userId,
+					email,
+					hashedPassword,
+					role,
+					fullName,
+				},
+			});
+
+			await tx.customer.upsert({
+				where: { userId },
+				update: {
 					name: fullName,
 					email,
 				},
-			});
-		} else {
-			// If no customer exists, create a new one linked to the user
-			await prisma.customer.create({
-				data: {
+				create: {
 					userId,
 					name: fullName,
 					email,
@@ -59,66 +58,67 @@ export async function signUp(values: SignUp) {
 					address: "",
 				},
 			});
-		}
+		});
 
-		const session = await lucia.createSession(userId, {});
-		const sessionCookie = lucia.createSessionCookie(session.id);
-
-		cookies().set(
-			sessionCookie.name,
-			sessionCookie.value,
-			sessionCookie.attributes,
-		);
-		redirect("/products");
+		const token = generateSessionToken();
+		const session = await createSession(token, userId);
+		setSessionTokenCookie(token, session.expiresAt);
+		return { success: true, redirectTo: "/products" };
 	} catch (error) {
 		console.error(error);
 		return { error: "Internal server error" };
 	}
 }
+
 export async function signIn(values: SignIn) {
 	try {
 		const { data, error } = await signInSchema.safeParseAsync(values);
 		if (error) return { error: "Invalid body received" };
 		const { email, password } = data;
-		const user = await prisma.user.findUnique({ where: { email } });
+		const user = await prisma.user.findUnique({
+			where: { email },
+			select: {
+				id: true,
+				hashedPassword: true,
+			},
+		});
 		if (!user) return { error: "Incorrect email or password" };
 		const validPassword = await new Argon2id().verify(
 			user.hashedPassword,
 			password,
 		);
 		if (!validPassword) return { error: "Incorrect email or password" };
-		const session = await lucia.createSession(user.id, {});
-		const sessionCookie = lucia.createSessionCookie(session.id);
-
-		cookies().set(
-			sessionCookie.name,
-			sessionCookie.value,
-			sessionCookie.attributes,
-		);
-		redirect("/products");
+		const token = generateSessionToken();
+		const session = await createSession(token, user.id);
+		setSessionTokenCookie(token, session.expiresAt);
+		return { success: true, redirectTo: "/products" };
 	} catch (error) {
 		console.error(error);
 		return { error: "Internal server error" };
 	}
 }
 
+export const getAuth = cache(async (): Promise<SessionValidationResult> => {
+	const sessionCookie = cookies().get("session");
+	if (!sessionCookie?.value) {
+		return { session: null, user: null };
+	}
+	return await validateSessionToken(sessionCookie.value);
+});
+
 export async function signOut() {
 	const { session } = await getAuth();
 	if (!session) {
-		redirect("/login");
+		return { success: true, redirectTo: "/login" };
 	}
-
-	await lucia.invalidateSession(session.id);
-
-	const sessionCookie = lucia.createBlankSessionCookie();
-
-	cookies().set(
-		sessionCookie.name,
-		sessionCookie.value,
-		sessionCookie.attributes,
-	);
-
-	redirect("/login");
+	try {
+		await invalidateSession(session.id);
+		deleteSessionTokenCookie();
+		return { success: true, redirectTo: "/login" };
+	} catch (error) {
+		console.error(error);
+		return { error: "Internal server error" };
+	}
 }
 
 export async function changePassword(email: string, password: string) {
@@ -127,14 +127,14 @@ export async function changePassword(email: string, password: string) {
 		if (!user) return { error: "Not authenticated" };
 		if (user.email !== email)
 			return { error: "Email does not match logged in user" };
+
+		const hashedPassword = await new Argon2id().hash(password);
 		const response = await prisma.user.update({
-			where: {
-				email,
-			},
-			data: {
-				hashedPassword: await new Argon2id().hash(password),
-			},
+			where: { email },
+			data: { hashedPassword },
+			select: { id: true },
 		});
+
 		if (!response) return { error: "Failed to update password" };
 		return { success: true, message: "Password updated successfully" };
 	} catch (error) {
@@ -146,14 +146,14 @@ export async function changePassword(email: string, password: string) {
 export async function changeEmail(email: string) {
 	try {
 		const { user } = await getAuth();
+		if (!user) return { error: "Not authenticated" };
+
 		const response = await prisma.user.update({
-			where: {
-				id: user?.id,
-			},
-			data: {
-				email: email,
-			},
+			where: { id: user.id },
+			data: { email },
+			select: { id: true },
 		});
+
 		if (!response) return { error: "Failed to update email" };
 		return { success: true, message: "Email updated successfully" };
 	} catch (error) {
@@ -165,14 +165,14 @@ export async function changeEmail(email: string) {
 export async function changeName(name: string) {
 	try {
 		const { user } = await getAuth();
+		if (!user) return { error: "Not authenticated" };
+
 		const response = await prisma.user.update({
-			where: {
-				id: user?.id,
-			},
-			data: {
-				fullName: name,
-			},
+			where: { id: user.id },
+			data: { fullName: name },
+			select: { id: true },
 		});
+
 		if (!response) return { error: "Failed to update name" };
 		return { success: true, message: "Name updated successfully" };
 	} catch (error) {
@@ -185,11 +185,15 @@ export async function createAdmin(values: SignUp) {
 	try {
 		const { user } = await getAuth();
 		if (user?.role !== "Superadmin") return { error: "Unauthorized" };
+
 		const { data, error } = await signUpSchema.safeParseAsync(values);
 		if (error) return { error: "Invalid credentials" };
+
 		const { email, password, role, fullName } = data;
-		const hashedPassword = await new Argon2id().hash(password);
-		const userId = generateId(10);
+		const [hashedPassword, userId] = await Promise.all([
+			new Argon2id().hash(password),
+			Promise.resolve(nanoid(10)),
+		]);
 
 		const response = await prisma.user.create({
 			data: {
@@ -199,7 +203,9 @@ export async function createAdmin(values: SignUp) {
 				role,
 				fullName,
 			},
+			select: { id: true },
 		});
+
 		if (!response) return { error: "User creation failed" };
 		return { success: true, message: "User created successfully" };
 	} catch (error) {
@@ -212,10 +218,13 @@ export async function updateAdmin(values: User) {
 	try {
 		const { user } = await getAuth();
 		if (user?.role !== "Superadmin") return { error: "Unauthorized operation" };
+
 		const response = await prisma.user.update({
 			where: { id: values.id },
 			data: values,
+			select: { id: true },
 		});
+
 		if (!response) return { error: "User update failed" };
 		revalidatePath("/settings");
 		return { success: true, message: "User updated successfully" };
@@ -229,7 +238,12 @@ export async function deleteAdmin(id: string) {
 	try {
 		const { user } = await getAuth();
 		if (user?.role !== "Superadmin") return { error: "Unauthorized operation" };
-		const response = await prisma.user.delete({ where: { id } });
+
+		const response = await prisma.user.delete({
+			where: { id },
+			select: { id: true },
+		});
+
 		if (!response) return { error: "User delete failed" };
 		revalidatePath("/settings");
 		return { success: true, message: "User deleted successfully" };

@@ -7,7 +7,7 @@ import type { Customer } from "@/lib/constants";
 import { useCartStore } from "@/lib/store";
 import { customerSchema } from "@/prisma/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { User } from "lucia";
+import type { User } from "@prisma/client";
 import { LoaderCircle, ShoppingCart } from "lucide-react";
 import { nanoid } from "nanoid";
 import Link from "next/link";

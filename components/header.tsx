@@ -14,8 +14,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export function Header({ email }: { email: string }) {
+	const { toast } = useToast();
+	const { push } = useRouter();
 	const { toggle } = useSidebarStore();
 	return (
 		<header className="flex h-16 items-center justify-between border-b px-4">
@@ -44,7 +48,20 @@ export function Header({ email }: { email: string }) {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						className="bg-destructive"
-						onClick={() => signOut()}
+						onClick={async () => {
+							const { redirectTo, error } = await signOut();
+							if (error) {
+								toast({
+									title: "Sign out failed",
+									description: error,
+									variant: "destructive",
+								});
+								return;
+							}
+							if (redirectTo) {
+								push(redirectTo);
+							}
+						}}
 					>
 						Log out
 					</DropdownMenuItem>

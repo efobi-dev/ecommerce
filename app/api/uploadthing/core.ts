@@ -1,4 +1,4 @@
-import { getAuth } from "@/lib/auth";
+import { getAuth } from "@/actions/auth";
 import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
