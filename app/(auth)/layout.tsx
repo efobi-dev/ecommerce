@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-	title: "%s |Authentication",
+	title: {
+		template: "%s | Authentication",
+		default: "Authentication",
+	},
 	description: "Authentication page",
 };
 

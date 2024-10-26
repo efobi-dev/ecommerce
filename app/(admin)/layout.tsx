@@ -8,7 +8,10 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-	title: "Admin",
+	title: {
+		template: "%s | Admin",
+		default: "Admin",
+	},
 	description: "Admin dashboard",
 };
 
