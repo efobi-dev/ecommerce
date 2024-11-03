@@ -36,7 +36,9 @@ jobs:
         SERVER_HOST: ${{ secrets.SERVER_HOST }}
         SERVER_USER: ${{ secrets.SERVER_USER }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "source ~/.profile && \
-          source ~/.bashrc && \
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          export BUN_INSTALL=\$HOME/.bun && \
+          export PATH=\$BUN_INSTALL/bin:\$PATH && \
           cd ~/apps/ecommerce && \
-          bash ./deploy.sh"
+          bash ./deploy.sh
+        "
