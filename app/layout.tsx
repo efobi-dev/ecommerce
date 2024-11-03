@@ -12,7 +12,10 @@ const body = localFont({
 export async function generateMetadata(): Promise<Metadata> {
 	const store = await getStore();
 	return {
-		title: `%s | ${store.name}`,
+		title: {
+			template: `%s | ${store.name}`,
+			default: `${store.name}`,
+		},
 		description: `The warehouse for all electronics at ${store.name}`,
 	};
 }
