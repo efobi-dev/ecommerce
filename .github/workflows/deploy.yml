@@ -13,15 +13,37 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install SSH Key
+    - name: Install SSH Key for Server
       uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        name: id_rsa # optional
+        name: id_rsa
         known_hosts: unnecessary
-        config: | # optional
+        config: |
           Host *
             StrictHostKeyChecking no
+
+    - name: Install GitHub Deploy Key
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$DEPLOY_KEY" > ~/.ssh/github_deploy_key
+        chmod 600 ~/.ssh/github_deploy_key
+        eval $(ssh-agent -s)
+        ssh-add ~/.ssh/github_deploy_key
+
+    - name: Copy GitHub Deploy Key to Server
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      run: |
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "mkdir -p ~/.ssh"
+        echo "$DEPLOY_KEY" | ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "cat > ~/.ssh/github_deploy_key"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "chmod 600 ~/.ssh/github_deploy_key"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'echo "Host github.com" >> ~/.ssh/config'
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'echo "  IdentityFile ~/.ssh/github_deploy_key" >> ~/.ssh/config'
 
     - name: Debug SSH Connection
       env:

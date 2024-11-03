@@ -53,6 +53,7 @@ export function ProductForm() {
 			categoryId: "",
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			available: true,
 		},
 	});
 
