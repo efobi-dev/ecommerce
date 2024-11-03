@@ -214,7 +214,9 @@ export async function createAdmin(values: SignUp) {
 	}
 }
 
-export async function updateAdmin(values: User) {
+export async function updateAdmin(
+	values: Omit<User, "hashedPassword">,
+): Promise<{ error: string } | { success: boolean; message: string }> {
 	try {
 		const { user } = await getAuth();
 		if (user?.role !== "Superadmin") return { error: "Unauthorized operation" };

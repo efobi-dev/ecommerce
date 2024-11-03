@@ -1,24 +1,18 @@
-import * as z from "zod";
-import {
-	type CompleteOrder,
-	type CompleteProduct,
-	relatedOrderSchema,
-	relatedProductSchema,
-} from "./index";
+import * as z from "zod"
+import { CompleteProduct, relatedProductSchema, CompleteOrder, relatedOrderSchema } from "./index"
 
 export const productVariantSchema = z.object({
-	id: z.string(),
-	name: z.string(),
-	sku: z.string(),
-	price: z.number(),
-	stock: z.number().int(),
-	productId: z.string(),
-});
+  id: z.string(),
+  name: z.string(),
+  sku: z.string(),
+  price: z.number(),
+  stock: z.number().int(),
+  productId: z.string(),
+})
 
-export interface CompleteProductVariant
-	extends z.infer<typeof productVariantSchema> {
-	product: CompleteProduct;
-	orders: CompleteOrder[];
+export interface CompleteProductVariant extends z.infer<typeof productVariantSchema> {
+  product: CompleteProduct
+  orders: CompleteOrder[]
 }
 
 /**
@@ -26,10 +20,7 @@ export interface CompleteProductVariant
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const relatedProductVariantSchema: z.ZodSchema<CompleteProductVariant> =
-	z.lazy(() =>
-		productVariantSchema.extend({
-			product: relatedProductSchema,
-			orders: relatedOrderSchema.array(),
-		}),
-	);
+export const relatedProductVariantSchema: z.ZodSchema<CompleteProductVariant> = z.lazy(() => productVariantSchema.extend({
+  product: relatedProductSchema,
+  orders: relatedOrderSchema.array(),
+}))
