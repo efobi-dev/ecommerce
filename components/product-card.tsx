@@ -2,6 +2,7 @@ import type { PartialProduct } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Naira } from "./naira";
 
 export function ProductCard({ p }: { p: PartialProduct }) {
 	return (
@@ -22,12 +23,11 @@ export function ProductCard({ p }: { p: PartialProduct }) {
 						<div>
 							<CardTitle className="text-lg">{p.name}</CardTitle>
 							<CardDescription className="mt-1">
-								{new Intl.NumberFormat("en-NG", {
-									style: "currency",
-									currency: "NGN",
-								}).format(Number(p.basePrice) + 0.1 * Number(p.basePrice))}{" "}
+								<Naira
+									value={Number(p.basePrice) + 0.1 * Number(p.basePrice)}
+								/>{" "}
 								per carton
-								{/** added #50 as requested */}
+								{/** added 10% as requested */}
 							</CardDescription>
 						</div>
 						<h3 className="font-semibold text-sm px-2 py-1 rounded">

@@ -14,6 +14,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Naira } from "./naira";
 
 export type Product = {
 	id: string;
@@ -29,13 +30,11 @@ export const productColumns: ColumnDef<Product>[] = [
 		accessorKey: "basePrice",
 		header: "Price",
 		cell: ({ row }) => {
-			const amount = Number(row.getValue("basePrice"));
-			const formatted = new Intl.NumberFormat("en-NG", {
-				style: "currency",
-				currency: "NGN",
-			}).format(amount);
-
-			return <div className="font-medium">{formatted}</div>;
+			return (
+				<div className="font-medium">
+					<Naira value={Number(row.getValue("basePrice"))} />
+				</div>
+			);
 		},
 	},
 	{

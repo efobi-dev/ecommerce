@@ -16,6 +16,7 @@ import {
 	CarouselPrevious,
 } from "./ui/carousel";
 import { Form } from "./ui/form";
+import { Naira } from "./naira";
 
 export function ProductDetails({ product }: { product: PartialProduct }) {
 	const { toggle } = useCartState();
@@ -69,10 +70,7 @@ export function ProductDetails({ product }: { product: PartialProduct }) {
 			<h3 className="text-2xl font-bold mb-4">{product.name}</h3>
 			<p>
 				<span className="text-primary text-xl font-semibold">
-					{new Intl.NumberFormat("en-NG", {
-						style: "currency",
-						currency: "NGN",
-					}).format(price)}
+					<Naira value={price} />
 				</span>{" "}
 				per carton
 			</p>

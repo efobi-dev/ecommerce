@@ -3,10 +3,23 @@ import { StoreNav } from "@/components/store-nav";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
+import prisma from "@/lib/db";
+import { env } from "@/lib/env";
 
-export const metadata: Metadata = {
-	title: "%s | Store",
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const store = await prisma.store.findUnique({
+		where: { id: env.NEXT_PUBLIC_STORE_ID },
+	});
+	return {
+		title: {
+			template: `%s | ${store?.name}`,
+			default: `${store?.name}`,
+		},
+		description: store?.maintenance
+			? "The store is currently under maintenance"
+			: `Welcome to ${store?.name}`,
+	};
+}
 
 export default async function StoreLayout({
 	children,

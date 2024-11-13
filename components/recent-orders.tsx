@@ -9,6 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
+import { Naira } from "./naira";
 
 export async function RecentOrders() {
 	const recentOrders = await prisma.order.findMany({
@@ -41,10 +42,7 @@ export async function RecentOrders() {
 									{new Date(order.createdAt).toLocaleString()}
 								</TableCell>
 								<TableCell className="text-right">
-									{new Intl.NumberFormat("en-NG", {
-										style: "currency",
-										currency: "NGN",
-									}).format(Number(order.totalAmount))}
+									<Naira value={Number(order.totalAmount)} />
 								</TableCell>
 							</TableRow>
 						))}

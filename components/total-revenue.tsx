@@ -2,6 +2,7 @@ import prisma from "@/lib/db";
 import { DollarSign } from "lucide-react";
 import { CardSkeleton } from "./loaders/card";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Naira } from "./naira";
 
 export async function TotalRevenue() {
 	const currentDate = new Date();
@@ -53,10 +54,7 @@ export async function TotalRevenue() {
 			</CardHeader>
 			<CardContent>
 				<div className="text-2xl font-bold">
-					{new Intl.NumberFormat("en-NG", {
-						style: "currency",
-						currency: "NGN",
-					}).format(Number(currentTotal))}
+					<Naira value={Number(currentTotal)} />
 				</div>
 				<p className="text-xs text-muted-foreground">
 					{percentageChange >= 0 ? "+" : "-"}

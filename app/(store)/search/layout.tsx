@@ -4,7 +4,10 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-	title: "Search Results",
+	title: {
+		template: "%s | Search results",
+		default: "Search results",
+	},
 };
 
 export default async function SearchLayout({

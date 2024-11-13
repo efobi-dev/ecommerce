@@ -19,6 +19,7 @@ import { Button } from "./ui/button";
 import { Form, FormField } from "./ui/form";
 import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
+import { Naira } from "./naira";
 
 interface UserCustomer extends User {
 	customer?: Customer;
@@ -229,17 +230,10 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 								</div>
 								<div className="text-right">
 									<p className="text-lg font-bold">
-										{new Intl.NumberFormat("en-NG", {
-											style: "currency",
-											currency: "NGN",
-										}).format(item.price * item.quantity)}
+										<Naira value={item.price * item.quantity} />
 									</p>
 									<p className="text-sm text-gray-600">
-										{new Intl.NumberFormat("en-NG", {
-											style: "currency",
-											currency: "NGN",
-										}).format(item.price)}{" "}
-										per carton
+										<Naira value={item.price} /> per carton
 									</p>
 								</div>
 							</div>
@@ -249,15 +243,12 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 					<div className="flex justify-between items-center text-xl font-bold">
 						<span>Total:</span>
 						<span>
-							{new Intl.NumberFormat("en-NG", {
-								style: "currency",
-								currency: "NGN",
-							}).format(
-								cart.reduce(
+							<Naira
+								value={cart.reduce(
 									(total, item) => total + item.quantity * item.price,
 									0,
-								),
-							)}
+								)}
+							/>
 						</span>
 					</div>
 				</div>

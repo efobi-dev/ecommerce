@@ -2,6 +2,16 @@ import { ProductCardLoader } from "@/components/loaders/product-card";
 import { ProductCard } from "@/components/product-card";
 import prisma from "@/lib/db";
 import type { Prisma } from "@prisma/client";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+	searchParams,
+}: { searchParams: { q?: string } }): Promise<Metadata> {
+	const query = searchParams.q || "";
+	return {
+		title: query,
+	};
+}
 
 export default async function SearchPage({
 	searchParams,

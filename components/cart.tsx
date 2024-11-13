@@ -14,6 +14,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "./ui/sheet";
+import { Naira } from "./naira";
 
 export function Cart() {
 	const { cart, emptyCart, removeItem } = useCartStore();
@@ -44,19 +45,12 @@ export function Cart() {
 										<div className="flex-grow">
 											<CardTitle className="text-lg">{item.name}</CardTitle>
 											<CardDescription className="text-sm mt-1">
-												{item.quantity} x{" "}
-												{new Intl.NumberFormat("en-NG", {
-													style: "currency",
-													currency: "NGN",
-												}).format(item.price)}
+												{item.quantity} x <Naira value={item.price} />
 											</CardDescription>
 										</div>
 										<div className="flex items-center space-x-2">
 											<CardContent className="text-lg font-semibold">
-												{new Intl.NumberFormat("en-NG", {
-													style: "currency",
-													currency: "NGN",
-												}).format(item.quantity * item.price)}
+												<Naira value={item.quantity * item.price} />
 											</CardContent>
 											<Button
 												size="icon"
@@ -75,15 +69,12 @@ export function Cart() {
 							<div className="flex justify-between items-center text-lg font-semibold">
 								<span>Total:</span>
 								<span>
-									{new Intl.NumberFormat("en-NG", {
-										style: "currency",
-										currency: "NGN",
-									}).format(
-										cart.reduce(
+									<Naira
+										value={cart.reduce(
 											(total, item) => total + item.quantity * item.price,
 											0,
-										),
-									)}
+										)}
+									/>
 								</span>
 							</div>{" "}
 							<Button

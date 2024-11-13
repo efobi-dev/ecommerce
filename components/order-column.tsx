@@ -1,6 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import { Naira } from "./naira";
 
 export type Order = {
 	id: string;
@@ -19,13 +20,11 @@ export const orderColumns: ColumnDef<Order>[] = [
 		accessorKey: "totalAmount",
 		header: "Amount",
 		cell: ({ row }) => {
-			const amount = Number(row.getValue("totalAmount"));
-			const formatted = new Intl.NumberFormat("en-NG", {
-				style: "currency",
-				currency: "NGN",
-			}).format(amount);
-
-			return <div className="font-medium">{formatted}</div>;
+			return (
+				<div className="font-medium">
+					<Naira value={Number(row.getValue("totalAmount"))} />
+				</div>
+			);
 		},
 	},
 	{
