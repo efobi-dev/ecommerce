@@ -1,4 +1,5 @@
 import prisma from "@/lib/db";
+import { Suspense } from "react";
 import { CategoriesCard } from "./categories";
 import { productColumns } from "./product-column";
 import { ProductsChart } from "./products-chart";
@@ -55,8 +56,8 @@ export async function Product() {
 		};
 	});
 
-	return data ? (
-		<>
+	return (
+		<Suspense fallback={<ProductsLoader />}>
 			<Card>
 				<CardHeader>
 					<CardTitle>Product Performance Overview</CardTitle>
@@ -74,8 +75,12 @@ export async function Product() {
 			</div>
 			<h2 className="mt-8 text-xl font-semibold">All Products</h2>
 			<DataTable columns={productColumns} data={data} />
-		</>
-	) : (
+		</Suspense>
+	);
+}
+
+function ProductsLoader() {
+	return (
 		<>
 			<Card>
 				<CardHeader>

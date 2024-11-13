@@ -2,8 +2,8 @@ import { ProductCardLoader } from "@/components/loaders/product-card";
 import { ProductCard } from "@/components/product-card";
 import prisma from "@/lib/db";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export async function generateMetadata({
 	params,

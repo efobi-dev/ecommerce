@@ -7,6 +7,7 @@ import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Naira } from "./naira";
 import { Button, buttonVariants } from "./ui/button";
 import {
 	Carousel,
@@ -16,7 +17,6 @@ import {
 	CarouselPrevious,
 } from "./ui/carousel";
 import { Form } from "./ui/form";
-import { Naira } from "./naira";
 
 export function ProductDetails({ product }: { product: PartialProduct }) {
 	const { toggle } = useCartState();

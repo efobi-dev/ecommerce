@@ -3,6 +3,7 @@
 import { useCartState, useCartStore } from "@/lib/store";
 import { Delete, ShoppingBag, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { Naira } from "./naira";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
@@ -14,7 +15,6 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "./ui/sheet";
-import { Naira } from "./naira";
 
 export function Cart() {
 	const { cart, emptyCart, removeItem } = useCartStore();

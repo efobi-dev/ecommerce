@@ -1,9 +1,9 @@
 import prisma from "@/lib/db";
 import { DollarSign } from "lucide-react";
-import { CardSkeleton } from "./loaders/card";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Suspense } from "react";
+import { CardSkeleton } from "./loaders/card";
 import { Naira } from "./naira";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export async function AverageOrder() {
 	const currentMonth = new Date().getMonth();

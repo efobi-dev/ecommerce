@@ -1,8 +1,8 @@
 import type { PartialProduct } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Naira } from "./naira";
+import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 export function ProductCard({ p }: { p: PartialProduct }) {
 	return (

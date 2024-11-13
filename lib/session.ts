@@ -1,11 +1,11 @@
-import prisma from "./db";
+import { sha256 } from "@oslojs/crypto/sha2";
 import {
 	encodeBase32LowerCaseNoPadding,
 	encodeHexLowerCase,
 } from "@oslojs/encoding";
-import { sha256 } from "@oslojs/crypto/sha2";
+import type { Session, User } from "@prisma/client";
 import { cookies } from "next/headers";
-import type { User, Session } from "@prisma/client";
+import prisma from "./db";
 
 export function generateSessionToken(): string {
 	const bytes = new Uint8Array(20);

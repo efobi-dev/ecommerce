@@ -1,9 +1,11 @@
 "use client";
 
 import { signOut } from "@/actions/auth";
+import { useToast } from "@/hooks/use-toast";
 import { useSidebarStore } from "@/lib/store";
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -14,8 +16,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 
 export function Header({ email }: { email: string }) {
 	const { toast } = useToast();

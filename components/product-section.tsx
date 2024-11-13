@@ -2,10 +2,10 @@ import type { PartialProduct } from "@/lib/constants";
 import { ProductCardLoader } from "./loaders/product-card";
 import { ProductCard } from "./product-card";
 
-export function ProductSection({ products }: { products?: PartialProduct[] }) {
+export function ProductSection({ products }: { products: PartialProduct[] }) {
 	return (
 		<section className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-			{products
+			{products.length > 0
 				? products.map((p) => (
 						<ProductCard
 							p={{ ...p, basePrice: Number(p.basePrice) }}

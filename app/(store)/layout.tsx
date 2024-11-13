@@ -1,10 +1,10 @@
 import { getStore } from "@/actions/store";
 import { StoreNav } from "@/components/store-nav";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import Script from "next/script";
 import prisma from "@/lib/db";
 import { env } from "@/lib/env";
+import type { Metadata } from "next";
+import Script from "next/script";
+import type { ReactNode } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const store = await prisma.store.findUnique({

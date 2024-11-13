@@ -2,11 +2,11 @@
 
 import { changePassword } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
+import { type SignIn, signInSchema } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "./ui/button";
 import { Form, FormField } from "./ui/form";
 import { Input } from "./ui/input";
@@ -14,23 +14,15 @@ import { Input } from "./ui/input";
 export function PasswordChange({ email }: { email: string }) {
 	const { toast } = useToast();
 	const [pending, setPending] = useState(false);
-	const schema = z.object({
-		email: z.string().email(),
-		password: z
-			.string({ required_error: "Password is required" })
-			.min(1, "Password is required")
-			.min(8, "Password must be more than 8 characters")
-			.max(32, "Password must be less than 32 characters"),
-	});
-	const form = useForm<z.infer<typeof schema>>({
-		resolver: zodResolver(schema),
+	const form = useForm<SignIn>({
+		resolver: zodResolver(signInSchema),
 		defaultValues: {
 			email: email,
 			password: "",
 		},
 	});
 
-	const submit = async (values: z.infer<typeof schema>) => {
+	const submit = async (values: SignIn) => {
 		setPending(true);
 		try {
 			const { email, password } = values;

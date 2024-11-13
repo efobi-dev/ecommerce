@@ -17,9 +17,9 @@ import { type SignIn, signInSchema } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 
 export default function Page() {
 	const { push } = useRouter();

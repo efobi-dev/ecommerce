@@ -1,7 +1,7 @@
+import { getAuth } from "@/actions/auth";
 import { getStore } from "@/actions/store";
 import { Header } from "@/components/header";
 import { SideBar } from "@/components/side-bar";
-import { getAuth } from "@/actions/auth";
 import { menuLink } from "@/lib/constants";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";

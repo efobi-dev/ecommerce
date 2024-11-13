@@ -3,10 +3,10 @@
 import { getAuth } from "@/actions/auth";
 import type { Store } from "@/lib/constants";
 import prisma from "@/lib/db";
+import { env } from "@/lib/env";
 import { storeSchema } from "@/prisma/zod";
 import { unstable_cache as cache } from "next/cache";
 import { revalidateTag } from "next/cache";
-import { env } from "@/lib/env";
 
 export async function getStore() {
 	return await cache(

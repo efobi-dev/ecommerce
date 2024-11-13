@@ -7,20 +7,20 @@ import {
 	signUpSchema,
 } from "@/lib/constants";
 import prisma from "@/lib/db";
-import { nanoid } from "nanoid";
-import { revalidatePath } from "next/cache";
-import { Argon2id } from "oslo/password";
 import {
+	type SessionValidationResult,
 	createSession,
-	invalidateSession,
 	deleteSessionTokenCookie,
+	generateSessionToken,
+	invalidateSession,
 	setSessionTokenCookie,
 	validateSessionToken,
-	generateSessionToken,
-	type SessionValidationResult,
 } from "@/lib/session";
 import type { User } from "@prisma/client";
+import { nanoid } from "nanoid";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { Argon2id } from "oslo/password";
 import { cache } from "react";
 
 export async function signUp(values: SignUp) {

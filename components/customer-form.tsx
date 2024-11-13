@@ -14,12 +14,12 @@ import Link from "next/link";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { usePaystackPayment } from "react-paystack";
+import { Naira } from "./naira";
 import { SignUpDialog } from "./signup-dialog";
 import { Button } from "./ui/button";
 import { Form, FormField } from "./ui/form";
 import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
-import { Naira } from "./naira";
 
 interface UserCustomer extends User {
 	customer?: Customer;
@@ -43,7 +43,7 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 		},
 	});
 
-	if (!cart?.length) {
+	if (!cart || cart?.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-8 rounded-lg shadow-md">
 				<h2 className="text-3xl font-bold text-primary mb-4">

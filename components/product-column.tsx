@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, LoaderCircle, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
+import { Naira } from "./naira";
 import { Button, buttonVariants } from "./ui/button";
 import {
 	DropdownMenu,
@@ -14,7 +15,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Naira } from "./naira";
 
 export type Product = {
 	id: string;
