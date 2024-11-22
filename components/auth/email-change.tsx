@@ -2,10 +2,10 @@
 
 import { changeEmail } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
-import { Label } from "../ui/label";
+import Form from "next/form";
 import { Submit } from "../submit";
 import { Input } from "../ui/input";
-import Form from "next/form";
+import { Label } from "../ui/label";
 
 export function EmailChange({ email }: { email: string }) {
 	const { toast } = useToast();

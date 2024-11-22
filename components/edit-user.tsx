@@ -28,12 +28,13 @@ import {
 export function UpdateUser({ values }: { values: User }) {
 	const { toast } = useToast();
 	const [pending, startTransition] = useTransition();
+	const { id, email, fullName, role } = values;
 	const form = useForm<User>({
 		defaultValues: {
-			id: values.id,
-			email: values.email,
-			fullName: values.fullName,
-			role: values.role,
+			id,
+			email,
+			fullName,
+			role,
 		},
 	});
 
@@ -75,7 +76,7 @@ export function UpdateUser({ values }: { values: User }) {
 				<DialogHeader>
 					<DialogTitle>Edit user</DialogTitle>
 					<DialogDescription>
-						Change the user detail as necessary.
+						Change the user details as necessary.
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>

@@ -11,7 +11,9 @@ export const userSchema = z.object({
 	id: z.string(),
 	email: z.string(),
 	fullName: z.string(),
-	hashedPassword: z.string(),
+	hashedPassword: z.string().nullish(),
+	googleId: z.string().nullish(),
+	avatar: z.string().nullish(),
 	role: z.nativeEnum(Role),
 });
 

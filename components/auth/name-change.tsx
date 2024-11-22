@@ -3,8 +3,8 @@
 import { changeName } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
 import Form from "next/form";
-import { Input } from "../ui/input";
 import { Submit } from "../submit";
+import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 export function NameChange({ name }: { name: string }) {

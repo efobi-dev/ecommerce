@@ -94,7 +94,9 @@ model User {
   sessions       Session[]
   email          String    @unique
   fullName       String
-  hashedPassword String    @unique
+  hashedPassword String?
+  googleId       String?   @unique
+  avatar         String?
   role           Role
   customer       Customer?
 }

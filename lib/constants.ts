@@ -17,7 +17,10 @@ export type Product = z.infer<typeof productSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type ProductImage = z.infer<typeof productImageSchema>;
 export type Store = z.infer<typeof storeSchema>;
-export type User = Omit<z.infer<typeof userSchema>, "hashedPassword">;
+export type User = Omit<
+	z.infer<typeof userSchema>,
+	"hashedPassword" | "googleId"
+>;
 export type Cart = z.infer<typeof cartSchema>;
 export interface PartialProduct extends Product {
 	category: Category;
@@ -85,3 +88,14 @@ export const menuLink: Menu[] = [
 	// 	icon: "Users",
 	// },
 ];
+
+export interface GoogleUser {
+	sub: string;
+	name: string;
+	given_name: string;
+	family_name: string;
+	picture: string;
+	email: string;
+	email_verified: boolean;
+	locale: string;
+}

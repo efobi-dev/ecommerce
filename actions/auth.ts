@@ -3,6 +3,7 @@
 import {
 	type SignIn,
 	type SignUp,
+	type User as UpdateUser,
 	signInSchema,
 	signUpSchema,
 } from "@/lib/constants";
@@ -83,6 +84,7 @@ export async function signIn(values: SignIn) {
 			},
 		});
 		if (!user) return { error: "Incorrect email or password" };
+		if (!user.hashedPassword) return { error: "Sign in with Google instead" };
 		const validPassword = await new Argon2id().verify(
 			user.hashedPassword,
 			password,
@@ -214,7 +216,7 @@ export async function createAdmin(values: SignUp) {
 	}
 }
 
-export async function updateAdmin(values: Omit<User, "hashedPassword">) {
+export async function updateAdmin(values: UpdateUser) {
 	try {
 		const { user } = await getAuth();
 		if (user?.role !== "Superadmin") return { error: "Unauthorized operation" };

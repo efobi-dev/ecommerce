@@ -1,8 +1,8 @@
 import { getAuth } from "@/actions/auth";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import type { ReactNode } from "react";
 import Script from "next/script";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
 	title: {

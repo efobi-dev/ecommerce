@@ -1,7 +1,5 @@
 import { getStore } from "@/actions/store";
 import { StoreNav } from "@/components/store-nav";
-import prisma from "@/lib/db";
-import { env } from "@/lib/env";
 import type { Metadata } from "next";
 import Script from "next/script";
 import type { ReactNode } from "react";

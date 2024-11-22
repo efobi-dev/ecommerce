@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "@/actions/auth";
+import Google from "@/assets/icons/google";
 import { useToast } from "@/hooks/use-toast";
 import Form from "next/form";
 import Link from "next/link";
@@ -86,6 +87,12 @@ export function LoginForm({ name }: { name: string }) {
 					</div>
 					<Submit className="w-full">Sign in</Submit>
 				</Form>
+				<Button variant={"outline"} className="w-full mt-2">
+					<Link href={"/login/google"} className="flex items-center">
+						<Google className="w-4 h-4 mr-2" />
+						Login with Google
+					</Link>
+				</Button>
 			</CardContent>
 			<CardFooter className="flex items-center justify-end">
 				<Button variant={"link"}>

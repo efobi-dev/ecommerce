@@ -4,8 +4,16 @@ import {
 	encodeHexLowerCase,
 } from "@oslojs/encoding";
 import type { Session, User } from "@prisma/client";
+import { Google } from "arctic";
 import { cookies } from "next/headers";
 import prisma from "./db";
+import { env } from "./env";
+
+export const google = new Google(
+	env.GOOGLE_CLIENT_ID,
+	env.GOOGLE_CLIENT_SECRET,
+	"/login/google/callback",
+);
 
 export function generateSessionToken(): string {
 	const bytes = new Uint8Array(20);

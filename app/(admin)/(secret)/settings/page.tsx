@@ -1,4 +1,5 @@
 import { getAuth } from "@/actions/auth";
+import { getStore } from "@/actions/store";
 import { EmailChange } from "@/components/auth/email-change";
 import { NameChange } from "@/components/auth/name-change";
 import { PasswordChange } from "@/components/password-change";
@@ -14,7 +15,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserTab } from "@/components/user-tab";
 import type { Metadata } from "next";
-import { getStore } from "@/actions/store";
 
 export const metadata: Metadata = {
 	title: "Settings",
