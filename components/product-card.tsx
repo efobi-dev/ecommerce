@@ -26,7 +26,7 @@ export function ProductCard({ p }: { p: PartialProduct }) {
 								<Naira
 									value={Number(p.basePrice) + 0.1 * Number(p.basePrice)}
 								/>{" "}
-								per carton
+								per unit
 								{/** added 10% as requested */}
 							</CardDescription>
 						</div>
