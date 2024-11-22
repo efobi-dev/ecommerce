@@ -40,17 +40,17 @@ export function UpdateUser({ values }: { values: User }) {
 	function submit(values: User) {
 		startTransition(async () => {
 			try {
-				const response = await updateAdmin(values);
-				if ("error" in response) {
+				const { error, message } = await updateAdmin(values);
+				if (error) {
 					toast({
 						title: "User update failed",
-						description: response.error,
+						description: error,
 						variant: "destructive",
 					});
 				} else {
 					toast({
 						title: "Success",
-						description: response.message,
+						description: message,
 					});
 				}
 			} catch (error) {
