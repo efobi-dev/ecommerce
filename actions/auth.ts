@@ -99,7 +99,7 @@ export async function signIn(values: SignIn) {
 }
 
 export const getAuth = cache(async (): Promise<SessionValidationResult> => {
-	const sessionCookie = cookies().get("session");
+	const sessionCookie = (await cookies()).get("session");
 	if (!sessionCookie?.value) {
 		return { session: null, user: null };
 	}

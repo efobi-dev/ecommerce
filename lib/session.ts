@@ -68,8 +68,11 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 	await prisma.session.delete({ where: { id: sessionId } });
 }
 
-export function setSessionTokenCookie(token: string, expiresAt: Date): void {
-	cookies().set("session", token, {
+export async function setSessionTokenCookie(
+	token: string,
+	expiresAt: Date,
+): Promise<void> {
+	(await cookies()).set("session", token, {
 		httpOnly: true,
 		sameSite: "lax",
 		secure: process.env.NODE_ENV === "production",
@@ -78,8 +81,8 @@ export function setSessionTokenCookie(token: string, expiresAt: Date): void {
 	});
 }
 
-export function deleteSessionTokenCookie(): void {
-	cookies().set("session", "", {
+export async function deleteSessionTokenCookie(): Promise<void> {
+	(await cookies()).set("session", "", {
 		httpOnly: true,
 		sameSite: "lax",
 		secure: process.env.NODE_ENV === "production",

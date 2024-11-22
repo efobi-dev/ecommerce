@@ -28,11 +28,11 @@ export default async function ({ children }: { children: ReactNode }) {
 		return true;
 	});
 
-	const store = await getStore();
+	const { name } = await getStore();
 
 	return (
 		<div className="flex h-screen overflow-hidden">
-			<SideBar menu={routes} name={store.name} />
+			<SideBar menu={routes} name={name} />
 			<div className="flex flex-1 flex-col overflow-hidden">
 				<Header email={user.email} />
 				{children}
