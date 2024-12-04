@@ -53,7 +53,7 @@ export function LoginForm({ name }: { name: string }) {
 	};
 
 	return (
-		<Card className="w-full mx-w-sm">
+		<Card className="w-full max-w-sm mx-auto">
 			<CardHeader>
 				<CardTitle className="text-2xl">Log in</CardTitle>
 				<CardDescription>

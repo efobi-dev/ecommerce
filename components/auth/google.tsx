@@ -45,7 +45,7 @@ export function GoogleSignIn() {
 			{pending ? (
 				<Loader className="animate-spin w-4 h-4" />
 			) : (
-				<span>
+				<span className="flex items-center">
 					<Google className="w-4 h-4 mr-2" />
 					Log in with Google
 				</span>

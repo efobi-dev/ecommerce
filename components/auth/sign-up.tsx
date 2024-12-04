@@ -50,7 +50,7 @@ export function SignupForm({ name }: { name: string }) {
 	};
 
 	return (
-		<Card className="mx-auto max-w-sm">
+		<Card className="mx-auto max-w-sm w-full">
 			<CardHeader>
 				<CardTitle className="text-2xl">Sign up</CardTitle>
 				<CardDescription>
