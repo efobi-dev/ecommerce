@@ -1,4 +1,5 @@
-import { getAuth } from "@/actions/auth";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ({ children }: { children: ReactNode }) {
-	const { user } = await getAuth();
-	if (!user) redirect("/login");
-	if (user.role !== "Superadmin") redirect("/products");
+	const authz = await auth.api.getSession({ headers: await headers() });
+	if (!authz?.user) redirect("/login");
+	if (authz?.user.role !== "owner") redirect("/products");
 	return <> {children} </>;
 }

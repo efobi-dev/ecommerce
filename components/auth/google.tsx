@@ -1,28 +1,23 @@
 "use client";
 
+import Google from "@/assets/icons/google";
 import { useToast } from "@/hooks/use-toast";
-import { admin } from "@/lib/auth.client";
-import { LoaderCircle, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth.client";
+import { Loader } from "lucide-react";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
-export function DeleteUser({ userId }: { userId: string }) {
+export function GoogleSignIn() {
 	const { toast } = useToast();
-	const router = useRouter();
 	const [pending, setPending] = useState(false);
-	const submit = async (userId: string) => {
+
+	const googleSignIn = async () => {
 		setPending(true);
 		try {
-			await admin.removeUser(
-				{ userId },
+			await signIn.social(
+				{ provider: "google" },
 				{
-					onSuccess: () => {
-						toast({
-							title: "Success",
-						});
-						router.refresh();
-					},
+					onSuccess: () => {},
 					onError: (ctx) => {
 						toast({
 							title: "Something went wrong",
@@ -46,18 +41,14 @@ export function DeleteUser({ userId }: { userId: string }) {
 	};
 
 	return (
-		<Button
-			variant={"destructive"}
-			size={"icon"}
-			onClick={() => submit(userId)}
-			disabled={pending}
-		>
+		<Button variant={"outline"} disabled={pending} onClick={googleSignIn}>
 			{pending ? (
-				<LoaderCircle className="w-4 h-4 animate-spin" />
+				<span>
+					<Google className="w-4 h-4 mr-2" />
+					Log in with Google
+				</span>
 			) : (
-				<>
-					<Trash className="w-4 h-4" />
-				</>
+				<Loader className="animate-spin w-4 h-4" />
 			)}
 		</Button>
 	);

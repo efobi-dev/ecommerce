@@ -1,5 +1,6 @@
-import { getAuth } from "@/actions/auth";
+import { auth } from "@/lib/auth";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Script from "next/script";
 import type { ReactNode } from "react";
@@ -15,9 +16,9 @@ export const metadata: Metadata = {
 export default async function AuthLayout({
 	children,
 }: { children: ReactNode }) {
-	const { user } = await getAuth();
+	const authz = await auth.api.getSession({ headers: await headers() });
 
-	if (user) {
+	if (authz?.session) {
 		redirect("/dashboard");
 	}
 

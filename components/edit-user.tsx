@@ -1,6 +1,6 @@
 "use client";
 
-import { updateAdmin } from "@/actions/auth";
+import { admin } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@/lib/constants";
 import { LoaderCircle, Pencil } from "lucide-react";
@@ -28,37 +28,44 @@ import {
 export function UpdateUser({ values }: { values: User }) {
 	const { toast } = useToast();
 	const [pending, startTransition] = useTransition();
-	const { id, email, fullName, role } = values;
+	const { id, email, name, role } = values;
 	const form = useForm<User>({
 		defaultValues: {
 			id,
 			email,
-			fullName,
+			name,
 			role,
 		},
 	});
 
 	function submit(values: User) {
+		const { id, role } = values;
 		startTransition(async () => {
 			try {
-				const { error, message } = await updateAdmin(values);
-				if (error) {
-					toast({
-						title: "User update failed",
-						description: error,
-						variant: "destructive",
-					});
-				} else {
-					toast({
-						title: "Success",
-						description: message,
-					});
-				}
+				await admin.setRole(
+					{ userId: id, role: role ?? "user" },
+					{
+						onSuccess: () => {
+							toast({
+								title: "Success",
+								description: "Updated successfully",
+							});
+						},
+						onError: (ctx) => {
+							toast({
+								title: "User update failed",
+								description: ctx.error.message,
+								variant: "destructive",
+							});
+						},
+					},
+				);
 			} catch (error) {
 				console.error(error);
 				toast({
 					title: "Something went wrong",
-					description: "Internal server error",
+					description:
+						error instanceof Error ? error.message : "Internal server error",
 					variant: "destructive",
 				});
 			}
@@ -86,7 +93,7 @@ export function UpdateUser({ values }: { values: User }) {
 					>
 						<FormField
 							control={form.control}
-							name="fullName"
+							name="name"
 							label="Full Name"
 							className="grid grid-cols-4 items-center gap-4"
 							render={({ field }) => (
@@ -113,14 +120,13 @@ export function UpdateUser({ values }: { values: User }) {
 							label="Designated role"
 							className="grid grid-cols-4 items-center gap-4"
 							render={({ field }) => (
-								<Select defaultValue={field.value}>
+								<Select defaultValue={field.value ?? ""}>
 									<SelectTrigger>
 										<SelectValue placeholder="Select a role" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="Admin">Admin</SelectItem>
-										<SelectItem value="User">User</SelectItem>
-										<SelectItem value="Superadmin">Super admin</SelectItem>
+										<SelectItem value="admin">Admin</SelectItem>
+										<SelectItem value="user">User</SelectItem>
 									</SelectContent>
 								</Select>
 							)}

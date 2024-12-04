@@ -1,12 +1,12 @@
 "use server";
 
-import { getAuth } from "@/actions/auth";
+import { auth } from "@/lib/auth";
 import type { Store } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { env } from "@/lib/env";
 import { storeSchema } from "@/prisma/zod";
-import { unstable_cache as cache } from "next/cache";
-import { revalidateTag } from "next/cache";
+import { unstable_cache as cache, revalidateTag } from "next/cache";
+import { headers } from "next/headers";
 
 export async function getStore() {
 	return await cache(
@@ -27,8 +27,8 @@ export async function getStore() {
 
 export async function updateStore(values: Store) {
 	try {
-		const { user } = await getAuth();
-		if (user?.role !== "Superadmin") return { error: "Unauthorized" };
+		const authz = await auth.api.getSession({ headers: await headers() });
+		if (authz?.user.role !== "owner") return { error: "Unauthorized" };
 		const { data, error } = await storeSchema.safeParseAsync(values);
 		if (error) return { error: error.issues[0].message };
 		const response = await prisma.store.update({

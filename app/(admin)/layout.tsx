@@ -1,4 +1,5 @@
-import { getAuth } from "@/actions/auth";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { getStore } from "@/actions/store";
 import { Header } from "@/components/header";
 import { SideBar } from "@/components/side-bar";
@@ -16,13 +17,13 @@ export const metadata: Metadata = {
 };
 
 export default async function ({ children }: { children: ReactNode }) {
-	const { user } = await getAuth();
+	const authz = await auth.api.getSession({ headers: await headers() });
 
-	if (!user) redirect("/login");
-	if (user.role === "User") redirect("/checkout");
+	if (!authz?.user) redirect("/login");
+	if (authz?.user.role === "user") redirect("/checkout");
 
 	const routes = menuLink.filter((p) => {
-		if (user.role === "Admin") {
+		if (authz?.user.role === "admin") {
 			return p.name === "Products";
 		}
 		return true;
@@ -34,7 +35,7 @@ export default async function ({ children }: { children: ReactNode }) {
 		<div className="flex h-screen overflow-hidden">
 			<SideBar menu={routes} name={name} />
 			<div className="flex flex-1 flex-col overflow-hidden">
-				<Header email={user.email} />
+				<Header email={authz?.user.email} />
 				{children}
 			</div>
 		</div>

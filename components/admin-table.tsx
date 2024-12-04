@@ -1,6 +1,5 @@
 "use client";
 
-import type { User } from "@/lib/constants";
 import { DeleteUser } from "./delete-user";
 import { UpdateUser } from "./edit-user";
 import {
@@ -11,6 +10,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
+import type { User } from "@/lib/constants";
 
 export function AdminTable({ users }: { users: User[] }) {
 	return (
@@ -28,14 +28,14 @@ export function AdminTable({ users }: { users: User[] }) {
 				<TableBody>
 					{users.map((user) => (
 						<TableRow key={user.id}>
-							<TableCell>{user.fullName}</TableCell>
+							<TableCell>{user.name}</TableCell>
 							<TableCell>{user.email}</TableCell>
 							<TableCell className="capitalize">
-								{user.role === "Admin"
+								{user.role === "admin"
 									? "Admin"
-									: user.role === "User"
+									: user.role === "user"
 										? "User"
-										: "Super admin"}
+										: "Owner"}
 							</TableCell>
 							<TableCell className="flex gap-4">
 								<UpdateUser values={user} />

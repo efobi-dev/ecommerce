@@ -1,8 +1,7 @@
 "use client";
 
-import { signIn } from "@/actions/auth";
-import Google from "@/assets/icons/google";
 import { useToast } from "@/hooks/use-toast";
+import { signIn } from "@/lib/auth.client";
 import Form from "next/form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,6 +17,7 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { GoogleSignIn } from "./google";
 
 export function LoginForm({ name }: { name: string }) {
 	const router = useRouter();
@@ -26,23 +26,26 @@ export function LoginForm({ name }: { name: string }) {
 		const email = form.get("email") as string;
 		const password = form.get("password") as string;
 		try {
-			const { error, redirectTo } = await signIn({ email, password });
-			if (error) {
-				toast({
-					title: "Login failed",
-					description: error,
-					variant: "destructive",
-				});
-			}
-			if (redirectTo) {
-				router.push(redirectTo);
-			}
+			await signIn.email(
+				{ email, password },
+				{
+					onSuccess: () => router.push("/dashboard"),
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
+				},
+			);
 		} catch (error) {
 			console.error(error);
 			if (error) {
 				toast({
-					title: "Login failed",
-					description: "Internal server error",
+					title: "Something went wrong",
+					description:
+						error instanceof Error ? error.message : "Internal server error",
 					variant: "destructive",
 				});
 			}
@@ -87,12 +90,7 @@ export function LoginForm({ name }: { name: string }) {
 					</div>
 					<Submit className="w-full">Sign in</Submit>
 				</Form>
-				<Button variant={"outline"} className="w-full mt-2">
-					<Link href={"/login/google"} className="flex items-center">
-						<Google className="w-4 h-4 mr-2" />
-						Login with Google
-					</Link>
-				</Button>
+				<GoogleSignIn />
 			</CardContent>
 			<CardFooter className="flex items-center justify-end">
 				<Button variant={"link"}>

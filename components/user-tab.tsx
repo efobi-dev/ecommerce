@@ -22,12 +22,12 @@ import { TabsContent } from "./ui/tabs";
 
 export async function UserTab() {
 	const admins = await prisma.user.findMany({
-		where: { role: { in: ["Admin", "Superadmin"] } },
+		where: { role: { in: ["admin", "member"] } },
 		select: {
 			id: true,
 			email: true,
 			role: true,
-			fullName: true,
+			name: true,
 		},
 	});
 	return (

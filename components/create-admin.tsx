@@ -1,7 +1,7 @@
 "use client";
 
-import { createAdmin } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
+import { admin } from "@/lib/auth.client";
 import { type SignUp, signUpSchema } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle, PlusCircle } from "lucide-react";
@@ -34,27 +34,30 @@ export function AddUser() {
 		resolver: zodResolver(signUpSchema),
 		defaultValues: {
 			email: "",
-			fullName: "",
+			name: "",
 			password: "",
-			role: "User",
+			role: "admin",
 		},
 	});
 
 	function submit(values: SignUp) {
 		startTransition(async () => {
 			try {
-				const { error, message } = await createAdmin(values);
-				if (error) {
-					toast({
-						title: "Failed to create user",
-						description: error,
-						variant: "destructive",
-					});
-				}
-				SetOpen(false);
-				toast({
-					title: "Success",
-					description: message,
+				await admin.createUser(values, {
+					onSuccess: () => {
+						SetOpen(false);
+						toast({
+							title: "Success",
+							description: "Created successfully",
+						});
+					},
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
 				});
 			} catch (err) {
 				console.error(err);
@@ -88,7 +91,7 @@ export function AddUser() {
 					>
 						<FormField
 							control={form.control}
-							name="fullName"
+							name="name"
 							label="Full Name"
 							className="grid grid-cols-4 items-center gap-4"
 							render={({ field }) => (

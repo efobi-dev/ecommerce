@@ -1,7 +1,7 @@
 "use client";
 
-import { changeName } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
+import { updateUser } from "@/lib/auth.client";
 import Form from "next/form";
 import { Submit } from "../submit";
 import { Input } from "../ui/input";
@@ -12,23 +12,29 @@ export function NameChange({ name }: { name: string }) {
 	const submit = async (form: FormData) => {
 		const name = form.get("name") as string;
 		try {
-			const { error, message } = await changeName(name);
-			if (error) {
-				toast({
-					title: "Name change failed",
-					description: error,
-					variant: "destructive",
-				});
-			}
-			toast({
-				title: "Success",
-				description: message,
-			});
+			await updateUser(
+				{ name },
+				{
+					onSuccess: () => {
+						toast({
+							title: "Success",
+						});
+					},
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
+				},
+			);
 		} catch (error) {
 			console.error(error);
 			toast({
-				title: "Name change failed",
-				description: "Internal server error",
+				title: "Something went wrong",
+				description:
+					error instanceof Error ? error.message : "Internal server error",
 				variant: "destructive",
 			});
 		}

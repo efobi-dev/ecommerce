@@ -1,6 +1,5 @@
 "use client";
-
-import { signOut } from "@/actions/auth";
+import { signOut } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
 import { useSidebarStore } from "@/lib/store";
 import { Menu } from "lucide-react";
@@ -49,18 +48,16 @@ export function Header({ email }: { email: string }) {
 					<DropdownMenuItem
 						className="bg-destructive"
 						onClick={async () => {
-							const { redirectTo, error } = await signOut();
+							const { error } = await signOut();
 							if (error) {
 								toast({
 									title: "Sign out failed",
-									description: error,
+									description: error.message,
 									variant: "destructive",
 								});
 								return;
 							}
-							if (redirectTo) {
-								push(redirectTo);
-							}
+							push("/login");
 						}}
 					>
 						Log out

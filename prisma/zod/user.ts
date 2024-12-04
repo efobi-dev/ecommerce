@@ -1,25 +1,31 @@
-import { Role } from "@prisma/client";
 import * as z from "zod";
 import {
+	type CompleteAccount,
 	type CompleteCustomer,
 	type CompleteSession,
+	relatedAccountSchema,
 	relatedCustomerSchema,
 	relatedSessionSchema,
 } from "./index";
 
 export const userSchema = z.object({
 	id: z.string(),
+	name: z.string(),
 	email: z.string(),
-	fullName: z.string(),
-	hashedPassword: z.string().nullish(),
-	googleId: z.string().nullish(),
-	avatar: z.string().nullish(),
-	role: z.nativeEnum(Role),
+	emailVerified: z.boolean(),
+	image: z.string().nullish(),
+	createdAt: z.date(),
+	updatedAt: z.date(),
+	role: z.string().nullish(),
+	banned: z.boolean().nullish(),
+	banReason: z.string().nullish(),
+	banExpires: z.date().nullish(),
 });
 
 export interface CompleteUser extends z.infer<typeof userSchema> {
-	sessions: CompleteSession[];
-	customer?: CompleteCustomer | null;
+	Account: CompleteAccount[];
+	Session: CompleteSession[];
+	Customer: CompleteCustomer[];
 }
 
 /**
@@ -29,7 +35,8 @@ export interface CompleteUser extends z.infer<typeof userSchema> {
  */
 export const relatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() =>
 	userSchema.extend({
-		sessions: relatedSessionSchema.array(),
-		customer: relatedCustomerSchema.nullish(),
+		Account: relatedAccountSchema.array(),
+		Session: relatedSessionSchema.array(),
+		Customer: relatedCustomerSchema.array(),
 	}),
 );

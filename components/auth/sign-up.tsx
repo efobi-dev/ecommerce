@@ -1,11 +1,9 @@
 "use client";
 
-import { signUp } from "@/actions/auth";
-import Google from "@/assets/icons/google";
 import { useToast } from "@/hooks/use-toast";
+import { signUp } from "@/lib/auth.client";
 import Form from "next/form";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Submit } from "../submit";
 import { Button } from "../ui/button";
 import {
@@ -18,37 +16,34 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { GoogleSignIn } from "./google";
 
 export function SignupForm({ name }: { name: string }) {
-	const router = useRouter();
 	const { toast } = useToast();
 	const submit = async (form: FormData) => {
-		const fullName = form.get("name") as string;
+		const name = form.get("name") as string;
 		const email = form.get("email") as string;
 		const password = form.get("password") as string;
 
 		try {
-			const { error, redirectTo } = await signUp({
-				fullName,
-				email,
-				password,
-				role: "User",
-			});
-			if (error) {
-				toast({
-					title: "Sign up failed",
-					description: error,
-					variant: "destructive",
-				});
-			}
-			if (redirectTo) {
-				router.push(redirectTo);
-			}
+			await signUp.email(
+				{ name, email, password, callbackURL: "/dashboard" },
+				{
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
+				},
+			);
 		} catch (error) {
 			console.error(error);
 			toast({
 				title: "Sign up failed",
-				description: "Internal server error",
+				description:
+					error instanceof Error ? error.message : "Internal server error",
 				variant: "destructive",
 			});
 		}
@@ -102,12 +97,7 @@ export function SignupForm({ name }: { name: string }) {
 					</div>
 					<Submit className="w-full">Sign up</Submit>
 				</Form>
-				<Button variant={"outline"} className="w-full mt-2">
-					<Link href={"/login/google"} className="flex items-center">
-						<Google className="w-4 h-4 mr-2" />
-						Login with Google
-					</Link>
-				</Button>
+				<GoogleSignIn />
 			</CardContent>
 			<CardFooter className="flex items-center justify-end">
 				<Button variant={"link"}>

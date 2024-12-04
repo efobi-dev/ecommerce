@@ -1,6 +1,5 @@
 "use server";
 
-import { getAuth } from "@/actions/auth";
 import type { Cart, Customer } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { customerSchema } from "@/prisma/zod";

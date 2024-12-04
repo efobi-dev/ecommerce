@@ -5,7 +5,6 @@ import type {
 	productImageSchema,
 	productSchema,
 	storeSchema,
-	userSchema,
 } from "@/prisma/zod";
 import { z } from "zod";
 
@@ -17,11 +16,14 @@ export type Product = z.infer<typeof productSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type ProductImage = z.infer<typeof productImageSchema>;
 export type Store = z.infer<typeof storeSchema>;
-export type User = Omit<
-	z.infer<typeof userSchema>,
-	"hashedPassword" | "googleId"
->;
 export type Cart = z.infer<typeof cartSchema>;
+
+export interface User {
+	id: string;
+	name: string;
+	email: string;
+	role: string | null | undefined;
+}
 export interface PartialProduct extends Product {
 	category: Category;
 	images: ProductImage[];
@@ -55,8 +57,8 @@ export const signUpSchema = z.object({
 		.min(1, "Password is required")
 		.min(8, "Password must be more than 8 characters")
 		.max(32, "Password must be less than 32 characters"),
-	fullName: z.string().min(8),
-	role: z.enum(["User", "Admin", "Superadmin"]).default("User"),
+	name: z.string().min(8),
+	role: z.enum(["owner", "admin", "user"]).default("user"),
 });
 
 export const cartSchema = z.object({

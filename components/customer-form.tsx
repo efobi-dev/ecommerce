@@ -22,7 +22,7 @@ import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
 
 interface UserCustomer extends User {
-	customer?: Customer;
+	Customer?: Customer;
 }
 
 export function CustomerForm({ user }: { user: UserCustomer | null }) {
@@ -32,8 +32,8 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 	const form = useForm<Customer>({
 		resolver: zodResolver(customerSchema),
 		defaultValues: {
-			id: user?.customer?.id ?? `CUS-${nanoid(5)}`,
-			name: user?.fullName ?? "",
+			id: user?.Customer?.id ?? `CUS-${nanoid(5)}`,
+			name: user?.name ?? "",
 			email: user?.email ?? "",
 			userId: user?.id,
 			phone: "",

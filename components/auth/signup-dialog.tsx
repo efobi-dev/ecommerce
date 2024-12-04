@@ -1,6 +1,6 @@
 "use client";
 
-import { signUp } from "@/actions/auth";
+import { signUp } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
@@ -21,29 +21,35 @@ export function SignUpDialog() {
 	const { toast } = useToast();
 	const router = useRouter();
 	const submit = async (form: FormData) => {
-		const fullName = form.get("name") as string;
+		const name = form.get("name") as string;
 		const email = form.get("email") as string;
 		const password = form.get("password") as string;
 		try {
-			const { error } = await signUp({
-				fullName,
-				email,
-				password,
-				role: "User",
-			});
-			if (error) {
-				toast({
-					title: "Sign up failed",
-					description: error,
-					variant: "destructive",
-				});
-			}
-			router.refresh();
+			await signUp.email(
+				{
+					name,
+					email,
+					password,
+				},
+				{
+					onSuccess: () => {
+						router.refresh();
+					},
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
+				},
+			);
 		} catch (error) {
 			console.error(error);
 			toast({
 				title: "Sign up failed",
-				description: "Internal server error",
+				description:
+					error instanceof Error ? error.message : "Internal server error",
 				variant: "destructive",
 			});
 		}

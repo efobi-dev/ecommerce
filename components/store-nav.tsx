@@ -1,7 +1,5 @@
-import { getAuth } from "@/actions/auth";
 import type { Store } from "@/lib/constants";
 import prisma from "@/lib/db";
-import { User } from "lucide-react";
 import Link from "next/link";
 import { Cart } from "./cart";
 import { CategorySheet } from "./category-sheet";
@@ -9,11 +7,7 @@ import { SearchInput } from "./search";
 import { Button } from "./ui/button";
 
 export async function StoreNav({ store }: { store: Store }) {
-	const [categories, auth] = await Promise.all([
-		prisma.category.findMany(),
-		getAuth(),
-	]);
-	const { user } = auth;
+	const categories = await prisma.category.findMany();
 	return (
 		<header className="sticky top-0 bg-transparent backdrop-blur-md flex items-center gap-4 px-4 py-2 z-10 w-full">
 			<CategorySheet categories={categories} />
