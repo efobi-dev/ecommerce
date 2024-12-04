@@ -43,12 +43,12 @@ export function GoogleSignIn() {
 	return (
 		<Button variant={"outline"} disabled={pending} onClick={googleSignIn}>
 			{pending ? (
+				<Loader className="animate-spin w-4 h-4" />
+			) : (
 				<span>
 					<Google className="w-4 h-4 mr-2" />
 					Log in with Google
 				</span>
-			) : (
-				<Loader className="animate-spin w-4 h-4" />
 			)}
 		</Button>
 	);

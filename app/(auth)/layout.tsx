@@ -29,9 +29,9 @@ export default async function AuthLayout({
 				src="https://cloud.umami.is/script.js"
 				data-website-id="fd1a8035-3637-4ae8-ae77-7cb317a6ac35"
 			/>
-			<div className="flex flex-col items-center justify-center h-screen">
+			<main className="flex flex-col items-center justify-center h-screen">
 				{children}
-			</div>
+			</main>
 		</>
 	);
 }
