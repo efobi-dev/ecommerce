@@ -1,9 +1,9 @@
 "use client";
 
-import { updateAvailability } from "@/actions/product";
+import { updateAvailability, deleteProduct } from "@/actions/product";
 import { useToast } from "@/hooks/use-toast";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, LoaderCircle, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, LoaderCircle, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Naira } from "./naira";
 import { Button, buttonVariants } from "./ui/button";
@@ -15,6 +15,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 export type Product = {
 	id: string;
@@ -64,6 +65,7 @@ export const productColumns: ColumnDef<Product>[] = [
 			const product = row.original;
 			const { toast } = useToast();
 			const [pending, setPending] = useState(false);
+			const router = useRouter()
 
 			async function submit() {
 				try {
@@ -116,6 +118,45 @@ export const productColumns: ColumnDef<Product>[] = [
 							}
 						>
 							Copy product ID
+						</DropdownMenuItem>
+						<DropdownMenuItem disabled={pending} className="bg-destructive text-destructive-foreground"  onClick={async () => {
+	setPending(true)
+	try {
+		const {error, message, success} = await deleteProduct(product.id)
+		if (error) {
+			toast({
+				title: 'Something went wrong',
+				description: error,
+				variant: 'destructive'
+			})
+			return
+		}
+		if (success) {
+			toast({
+				title: 'Success',
+				description: message
+			})
+			router.refresh()
+		}
+	} catch (error) {
+		console.error(error)
+		toast({
+			title: 'Something went wrong',
+			description: error instanceof Error ? error.message : 'Internal server error',
+			variant: 'destructive'
+		})
+	} finally {
+		setPending(false)
+	}
+}}>{
+	pending ? (
+		<LoaderCircle className="animates-spin w-4 h-4" />
+	) : (
+		<span className="flex items-center">
+<Trash2 /> Delete
+		</span>
+	)
+}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
