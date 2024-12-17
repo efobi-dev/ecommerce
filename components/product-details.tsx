@@ -72,7 +72,7 @@ export function ProductDetails({ product }: { product: PartialProduct }) {
 				<span className="text-primary text-xl font-semibold">
 					<Naira value={price} />
 				</span>{" "}
-				per unit
+				per carton
 			</p>
 			<div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
 				<p className="flex-grow">{product.description}</p>

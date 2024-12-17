@@ -233,7 +233,7 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 										<Naira value={item.price * item.quantity} />
 									</p>
 									<p className="text-sm text-gray-600">
-										<Naira value={item.price} /> per unit
+										<Naira value={item.price} /> per carton
 									</p>
 								</div>
 							</div>
