@@ -10,7 +10,7 @@ export function ProductCard({ p }: { p: PartialProduct }) {
 			<Link href={`/product/${p.name}`} className="block">
 				<div className="relative h-48">
 					<Image
-						src={p.images[0].url}
+						src={p.images[0]?.url ?? null}
 						fill
 						alt={p.name}
 						sizes="100vw"
