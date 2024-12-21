@@ -1,12 +1,12 @@
 "use client";
 
-import { changePassword } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
+import { changePassword } from "@/lib/auth.client";
 import Form from "next/form";
+import { Submit } from "./submit";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Submit } from "./submit";
-import { Card, CardHeader, CardContent, CardTitle } from "./ui/card";
 export function PasswordChange() {
 	const { toast } = useToast();
 

@@ -3,7 +3,9 @@
 import { addCategory } from "@/actions/category";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle } from "lucide-react";
+import Form from "next/form";
 import { useState } from "react";
+import { Submit } from "./submit";
 import { Button } from "./ui/button";
 import {
 	Dialog,
@@ -13,9 +15,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "./ui/dialog";
-import Form from "next/form";
 import { Input } from "./ui/input";
-import { Submit } from "./submit";
 import { Label } from "./ui/label";
 
 export function CategoryForm() {

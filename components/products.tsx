@@ -1,6 +1,7 @@
 import prisma from "@/lib/db";
 import { Suspense } from "react";
 import { CategoriesCard } from "./categories";
+import { ContentCard } from "./content-card";
 import { productColumns } from "./product-column";
 import { ProductsChart } from "./products-chart";
 import {
@@ -72,6 +73,7 @@ export async function Product() {
 			<h2 className="text-xl font-semibold py-4">Other actions</h2>
 			<div className="grid gap-4 md:grid-cols-3">
 				<CategoriesCard />
+				<ContentCard />
 			</div>
 			<h2 className="mt-8 text-xl font-semibold">All Products</h2>
 			<DataTable columns={productColumns} data={data} />
@@ -93,6 +95,7 @@ function ProductsLoader() {
 			</Card>
 			<Skeleton className="h-8 w-1/4 mt-8" />
 			<div className="grid gap-4 md:grid-cols-3 mt-4">
+				<Skeleton className="h-[200px]" />
 				<Skeleton className="h-[200px]" />
 			</div>
 			<Skeleton className="h-8 w-1/4 mt-8" />

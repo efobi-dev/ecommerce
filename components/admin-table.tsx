@@ -1,5 +1,6 @@
 "use client";
 
+import type { User } from "@/lib/constants";
 import { DeleteUser } from "./delete-user";
 import { UpdateUser } from "./edit-user";
 import {
@@ -10,7 +11,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
-import type { User } from "@/lib/constants";
 
 export function AdminTable({ users }: { users: User[] }) {
 	return (

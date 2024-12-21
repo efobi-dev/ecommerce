@@ -1,10 +1,10 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { getStore } from "@/actions/store";
 import { Header } from "@/components/header";
 import { SideBar } from "@/components/side-bar";
+import { auth } from "@/lib/auth";
 import { menuLink } from "@/lib/constants";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 

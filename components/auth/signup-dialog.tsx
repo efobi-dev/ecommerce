@@ -1,7 +1,7 @@
 "use client";
 
-import { signUp } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
+import { signUp } from "@/lib/auth.client";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
 import { Submit } from "../submit";

@@ -5,17 +5,18 @@ import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export default async function Page() {
-	const response = await prisma.product.findMany({
-		take: 6,
-		include: { images: true, category: true },
-	});
+	const [images, response] = await Promise.all([
+		await prisma.bannerImages.findMany({ where: { active: true } }),
+		await prisma.product.findMany({
+			take: 6,
+			include: { images: true, category: true },
+		}),
+	]);
 	if (!response) return notFound();
 	const products = response.map((p) => ({
 		...p,
 		basePrice: Number(p.basePrice),
 	}));
-
-	const images = products.map((p) => p.images[0]);
 	return (
 		<>
 			<HeroSection images={images} />

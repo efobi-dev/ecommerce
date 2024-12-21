@@ -1,6 +1,6 @@
 "use client";
-import { signOut } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
+import { signOut } from "@/lib/auth.client";
 import { useSidebarStore } from "@/lib/store";
 import { Menu } from "lucide-react";
 import Link from "next/link";

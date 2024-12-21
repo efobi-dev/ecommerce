@@ -3,7 +3,7 @@
 import { addProductImage } from "@/actions/product";
 import { useToast } from "@/hooks/use-toast";
 import type { ProductImage } from "@/lib/constants";
-import { UploadDropzone } from "@/lib/uploadthing";
+import { UploadDropzone } from "@/lib/uploadthing/client";
 import { productImageSchema } from "@/prisma/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
@@ -19,7 +19,7 @@ export function ProductUpload({ productId }: { productId: string }) {
 	const { toast } = useToast();
 	const [maxImage, setMaxImage] = useState(0);
 	const [pending, startTransition] = useTransition();
-	const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
+	const [fileUrl, setFileUrl] = useState<string>();
 	const form = useForm<ProductImage>({
 		resolver: zodResolver(productImageSchema),
 		defaultValues: {
@@ -40,6 +40,7 @@ export function ProductUpload({ productId }: { productId: string }) {
 						description: error,
 						variant: "destructive",
 					});
+					return;
 				}
 				toast({
 					title: "Success",
@@ -60,7 +61,14 @@ export function ProductUpload({ productId }: { productId: string }) {
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(submit, (errors) => console.error(errors))}
+				onSubmit={form.handleSubmit(submit, (errors) => {
+					const errorMessages = Object.values(errors);
+					toast({
+						title: "Invalid body",
+						description: errorMessages[0].message,
+						variant: "destructive",
+					});
+				})}
 				className="space-y-6"
 			>
 				<div className="flex justify-center">
@@ -106,7 +114,7 @@ export function ProductUpload({ productId }: { productId: string }) {
 				<Button
 					type="submit"
 					className="w-full"
-					disabled={fileUrl === undefined}
+					disabled={fileUrl === undefined || pending}
 				>
 					{pending ? (
 						<LoaderCircle className="animate-spin h-4 w-4" />

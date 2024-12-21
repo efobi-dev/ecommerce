@@ -60,16 +60,16 @@ export async function updateAvailability(values: {
 
 export async function deleteProduct(id: string) {
 	try {
-	const authz = await auth.api.getSession({headers: await headers()})
-	if (!authz?.user) return {error: 'Unauthorized'}
-	if (authz?.user.role === 'user') return {error: 'Unauthorized'}
-	const product = await prisma.product.findUnique({where: {id}})
-	if (!product) return {error: 'Product not found'}
-	const deleted = await prisma.product.delete({where: {id}})
-	if (!deleted) return {error: 'Failed to delete product'}
-	return {success: true, message: 'Product deleted successfully'}
+		const authz = await auth.api.getSession({ headers: await headers() });
+		if (!authz?.user) return { error: "Unauthorized" };
+		if (authz?.user.role === "user") return { error: "Unauthorized" };
+		const product = await prisma.product.findUnique({ where: { id } });
+		if (!product) return { error: "Product not found" };
+		const deleted = await prisma.product.delete({ where: { id } });
+		if (!deleted) return { error: "Failed to delete product" };
+		return { success: true, message: "Product deleted successfully" };
 	} catch (error) {
-		console.error(error)
-		return {error: 'Internal server error'}
+		console.error(error);
+		return { error: "Internal server error" };
 	}
 }

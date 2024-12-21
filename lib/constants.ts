@@ -1,4 +1,5 @@
 import type {
+	bannerImagesSchema,
 	categorySchema,
 	customerSchema,
 	orderSchema,
@@ -6,6 +7,7 @@ import type {
 	productSchema,
 	storeSchema,
 } from "@/prisma/zod";
+import type { ColumnDef } from "@tanstack/react-table";
 import { z } from "zod";
 
 export type SignIn = z.infer<typeof signInSchema>;
@@ -17,6 +19,12 @@ export type Category = z.infer<typeof categorySchema>;
 export type ProductImage = z.infer<typeof productImageSchema>;
 export type Store = z.infer<typeof storeSchema>;
 export type Cart = z.infer<typeof cartSchema>;
+export type BannerImage = z.infer<typeof bannerImagesSchema>;
+
+export interface DataTableProps<TData, TValue> {
+	columns: ColumnDef<TData, TValue>[];
+	data: TData[];
+}
 
 export interface User {
 	id: string;

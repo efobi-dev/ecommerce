@@ -161,3 +161,10 @@ model Verification {
 
   @@map("verification")
 }
+
+model BannerImages {
+  id      String  @id @default(cuid())
+  url     String
+  altText String
+  active  Boolean @default(false)
+}

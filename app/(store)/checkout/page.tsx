@@ -1,8 +1,8 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { CustomerForm } from "@/components/customer-form";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
 	title: "Checkout",

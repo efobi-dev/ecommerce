@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	type ColumnDef,
 	type ColumnFiltersState,
 	type SortingState,
 	flexRender,
@@ -23,12 +22,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import type { DataTableProps } from "@/lib/constants";
 import { usePathname } from "next/navigation";
-
-interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[];
-	data: TData[];
-}
 
 export function DataTable<TData, TValue>({
 	columns,
@@ -53,19 +48,26 @@ export function DataTable<TData, TValue>({
 			columnFilters,
 		},
 	});
+	const nameColumn = table?.getColumn("name");
 
 	return (
 		<>
 			<div
-				className={`flex items-center py-4 ${pathname === "/orders" ? "justify-end" : "justify-between"}`}
+				className={`flex items-center py-4 ${pathname === "/orders" ? "justify-end" : pathname === "/dashboard" ? "hidden" : "justify-between"}`}
 			>
 				<Input
 					placeholder="Filter products..."
-					value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-					onChange={(event) =>
-						table.getColumn("name")?.setFilterValue(event.target.value)
+					value={
+						nameColumn
+							? ((table.getColumn("name")?.getFilterValue() as string) ?? "")
+							: ""
 					}
-					className={`${pathname === "/orders" ? "hidden" : "max-w-sm"}`}
+					onChange={(event) => {
+						nameColumn
+							? table.getColumn("name")?.setFilterValue(event.target.value)
+							: null;
+					}}
+					className={`${pathname === "/orders" || pathname === "/products" ? "hidden" : "max-w-sm"}`}
 				/>
 				<div className="flex items-center space-x-2 py-4">
 					<Button

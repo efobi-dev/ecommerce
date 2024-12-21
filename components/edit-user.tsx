@@ -1,7 +1,7 @@
 "use client";
 
-import { admin } from "@/lib/auth.client";
 import { useToast } from "@/hooks/use-toast";
+import { admin } from "@/lib/auth.client";
 import type { User } from "@/lib/constants";
 import { LoaderCircle, Pencil } from "lucide-react";
 import { useTransition } from "react";
