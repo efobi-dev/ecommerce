@@ -14,8 +14,8 @@ export function SearchInput({ className }: { className?: string }) {
 
 	return (
 		<Input
-			type="search for products"
-			placeholder="Search"
+			type="search"
+			placeholder="Search for products..."
 			autoFocus
 			className={cn("w-full", className)}
 			onChange={(e) => handleSearch(e.target.value)}
