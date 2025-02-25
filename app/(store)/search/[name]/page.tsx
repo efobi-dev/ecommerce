@@ -7,8 +7,8 @@ import { Suspense } from "react";
 
 export async function generateMetadata({
 	params,
-}: { params: { name: string } }): Promise<Metadata> {
-	const { name } = params;
+}: { params: Promise<{ name: string }> }): Promise<Metadata> {
+	const { name } = await params;
 	const category = await prisma.category.findUnique({ where: { name } });
 
 	return {
@@ -21,8 +21,10 @@ export async function generateMetadata({
 		},
 	};
 }
-export default async function Page({ params }: { params: { name: string } }) {
-	const { name } = params;
+export default async function Page({
+	params,
+}: { params: Promise<{ name: string }> }) {
+	const { name } = await params;
 	const category = await prisma.category.findUnique({ where: { name } });
 	const products = await prisma.product.findMany({
 		where: { categoryId: category?.id },

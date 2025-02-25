@@ -1,6 +1,6 @@
-import { getAuth } from "@/actions/auth";
-import { EmailChange } from "@/components/email-change";
-import { NameChange } from "@/components/name-change";
+import { getStore } from "@/actions/store";
+import { EmailChange } from "@/components/auth/email-change";
+import { NameChange } from "@/components/auth/name-change";
 import { PasswordChange } from "@/components/password-change";
 import { StoreForm } from "@/components/store-form";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserTab } from "@/components/user-tab";
+import { auth } from "@/lib/auth";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
 	title: "Settings",
@@ -26,8 +28,11 @@ export default async function Page() {
 		{ name: "User management", value: "users" },
 		// { name: "System configuration", value: "system" },
 	];
-	const { user } = await getAuth();
-	if (user?.role !== "Superadmin") {
+	const [authz, store] = await Promise.all([
+		auth.api.getSession({ headers: await headers() }),
+		getStore(),
+	]);
+	if (authz?.user?.role !== "admin") {
 		return tabList.filter((tab) => tab.value === "profile");
 	}
 
@@ -55,13 +60,13 @@ export default async function Page() {
 								<ThemeToggle />
 							</CardHeader>
 							<CardContent className="space-y-4">
-								<NameChange name={user.fullName} />
-								<EmailChange email={user.email} />
-								<PasswordChange email={user.email} />
+								<NameChange name={authz?.user?.name} />
+								<EmailChange email={authz?.user?.email} />
+								<PasswordChange />
 							</CardContent>
 						</Card>
 					</TabsContent>
-					<StoreForm />
+					<StoreForm store={store} />
 					<UserTab />
 				</Tabs>
 			</div>

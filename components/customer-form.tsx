@@ -14,15 +14,15 @@ import Link from "next/link";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { usePaystackPayment } from "react-paystack";
+import { SignUpDialog } from "./auth/signup-dialog";
 import { Naira } from "./naira";
-import { SignUpDialog } from "./signup-dialog";
 import { Button } from "./ui/button";
 import { Form, FormField } from "./ui/form";
 import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
 
 interface UserCustomer extends User {
-	customer?: Customer;
+	Customer?: Customer;
 }
 
 export function CustomerForm({ user }: { user: UserCustomer | null }) {
@@ -32,8 +32,8 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 	const form = useForm<Customer>({
 		resolver: zodResolver(customerSchema),
 		defaultValues: {
-			id: user?.customer?.id ?? `CUS-${nanoid(5)}`,
-			name: user?.fullName ?? "",
+			id: user?.Customer?.id ?? `CUS-${nanoid(5)}`,
+			name: user?.name ?? "",
 			email: user?.email ?? "",
 			userId: user?.id,
 			phone: "",
@@ -100,7 +100,7 @@ export function CustomerForm({ user }: { user: UserCustomer | null }) {
 	};
 
 	const config = {
-		publicKey: "pk_test_2255cad94acf9d391fc7b3fb02d287d00ee1ea09",
+		publicKey: "pk_live_4fa091cc8195750951f6bdb4df7e3c9f5654bc06",
 		reference: nanoid(10),
 		email: form.getValues("email"),
 		amount: cart?.reduce((a, c) => a + c.price * c.quantity, 0) * 100,

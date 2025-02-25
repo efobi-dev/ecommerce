@@ -2,11 +2,10 @@
 
 import { addCategory } from "@/actions/category";
 import { useToast } from "@/hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
+import Form from "next/form";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Submit } from "./submit";
 import { Button } from "./ui/button";
 import {
 	Dialog,
@@ -16,27 +15,16 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "./ui/dialog";
-import { Form, FormField } from "./ui/form";
 import { Input } from "./ui/input";
-
-const schema = z.object({
-	name: z.string(),
-});
+import { Label } from "./ui/label";
 
 export function CategoryForm() {
 	const { toast } = useToast();
-	const [pending, setPending] = useState(false);
 	const [open, setOpen] = useState(false);
-	const form = useForm<z.infer<typeof schema>>({
-		resolver: zodResolver(schema),
-		defaultValues: {
-			name: "",
-		},
-	});
-	const submit = async (values: z.infer<typeof schema>) => {
-		setPending(true);
+	const submit = async (form: FormData) => {
+		const name = form.get("name") as string;
 		try {
-			const { error, message } = await addCategory(values.name);
+			const { error, message } = await addCategory(name);
 			if (error) {
 				toast({
 					title: "Something went wrong",
@@ -57,8 +45,6 @@ export function CategoryForm() {
 				description: "Internal server error",
 				variant: "destructive",
 			});
-		} finally {
-			setPending(false);
 		}
 	};
 	return (
@@ -75,22 +61,12 @@ export function CategoryForm() {
 						Enter the name of the new category below:
 					</DialogDescription>
 				</DialogHeader>
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submit)} className="grid gap-4">
-						<FormField
-							control={form.control}
-							name="name"
-							label="Name"
-							render={({ field }) => <Input {...field} />}
-						/>
-						<Button type="submit">
-							{pending ? (
-								<LoaderCircle className="w-4 h-4 animate-spin" />
-							) : (
-								"Add"
-							)}
-						</Button>
-					</form>
+				<Form action={submit} className="grid gap-4">
+					<div className="grid gap-2">
+						<Label htmlFor="name">Name</Label>
+						<Input id="name" name="name" className="w-full" required />
+					</div>
+					<Submit>Add</Submit>
 				</Form>
 			</DialogContent>
 		</Dialog>

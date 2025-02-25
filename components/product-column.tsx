@@ -1,9 +1,15 @@
 "use client";
 
-import { updateAvailability } from "@/actions/product";
+import { deleteProduct, updateAvailability } from "@/actions/product";
 import { useToast } from "@/hooks/use-toast";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, LoaderCircle, MoreHorizontal } from "lucide-react";
+import {
+	ArrowUpDown,
+	LoaderCircle,
+	MoreHorizontal,
+	Trash2,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Naira } from "./naira";
 import { Button, buttonVariants } from "./ui/button";
@@ -64,6 +70,7 @@ export const productColumns: ColumnDef<Product>[] = [
 			const product = row.original;
 			const { toast } = useToast();
 			const [pending, setPending] = useState(false);
+			const router = useRouter();
 
 			async function submit() {
 				try {
@@ -99,7 +106,7 @@ export const productColumns: ColumnDef<Product>[] = [
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
+						<Button size={"icon"} variant="ghost" className="h-8 w-8 p-0">
 							<span className="sr-only">Open menu</span>
 							<MoreHorizontal className="h-4 w-4" />
 						</Button>
@@ -116,6 +123,53 @@ export const productColumns: ColumnDef<Product>[] = [
 							}
 						>
 							Copy product ID
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							disabled={pending}
+							className={buttonVariants({ variant: "destructive" })}
+							onClick={async () => {
+								setPending(true);
+								try {
+									const { error, message, success } = await deleteProduct(
+										product.id,
+									);
+									if (error) {
+										toast({
+											title: "Something went wrong",
+											description: error,
+											variant: "destructive",
+										});
+										return;
+									}
+									if (success) {
+										toast({
+											title: "Success",
+											description: message,
+										});
+										router.refresh();
+									}
+								} catch (error) {
+									console.error(error);
+									toast({
+										title: "Something went wrong",
+										description:
+											error instanceof Error
+												? error.message
+												: "Internal server error",
+										variant: "destructive",
+									});
+								} finally {
+									setPending(false);
+								}
+							}}
+						>
+							{pending ? (
+								<LoaderCircle className="animates-spin w-4 h-4" />
+							) : (
+								<span>
+									<Trash2 /> Delete
+								</span>
+							)}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem

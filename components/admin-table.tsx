@@ -28,14 +28,14 @@ export function AdminTable({ users }: { users: User[] }) {
 				<TableBody>
 					{users.map((user) => (
 						<TableRow key={user.id}>
-							<TableCell>{user.fullName}</TableCell>
+							<TableCell>{user.name}</TableCell>
 							<TableCell>{user.email}</TableCell>
 							<TableCell className="capitalize">
-								{user.role === "Admin"
+								{user.role === "admin"
 									? "Admin"
-									: user.role === "User"
+									: user.role === "user"
 										? "User"
-										: "Super admin"}
+										: "Owner"}
 							</TableCell>
 							<TableCell className="flex gap-4">
 								<UpdateUser values={user} />

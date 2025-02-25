@@ -1,38 +1,49 @@
 "use client";
 
-import { deleteAdmin } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
+import { admin } from "@/lib/auth.client";
 import { LoaderCircle, Trash } from "lucide-react";
-import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "./ui/button";
 
 export function DeleteUser({ userId }: { userId: string }) {
 	const { toast } = useToast();
-	const [pending, startTransition] = useTransition();
-	function submit(userId: string) {
-		startTransition(async () => {
-			try {
-				const { error, message } = await deleteAdmin(userId);
-				if (error) {
-					toast({
-						title: "Something went wrong",
-						description: error,
-						variant: "destructive",
-					});
-				}
-				toast({
-					title: "Success",
-					description: message,
-				});
-			} catch (error) {
-				toast({
-					title: "Something went wrong",
-					description: "Internal server error",
-					variant: "destructive",
-				});
-			}
-		});
-	}
+	const router = useRouter();
+	const [pending, setPending] = useState(false);
+	const submit = async (userId: string) => {
+		setPending(true);
+		try {
+			await admin.removeUser(
+				{ userId },
+				{
+					onSuccess: () => {
+						toast({
+							title: "Success",
+						});
+						router.refresh();
+					},
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
+				},
+			);
+		} catch (error) {
+			console.error(error);
+			toast({
+				title: "Something went wrong",
+				description:
+					error instanceof Error ? error.message : "Internal server error",
+				variant: "destructive",
+			});
+		} finally {
+			setPending(false);
+		}
+	};
 
 	return (
 		<Button

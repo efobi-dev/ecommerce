@@ -1,82 +1,82 @@
 "use client";
 
-import { changePassword } from "@/actions/auth";
 import { useToast } from "@/hooks/use-toast";
-import { type SignIn, signInSchema } from "@/lib/constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
-import { Form, FormField } from "./ui/form";
+import { changePassword } from "@/lib/auth.client";
+import Form from "next/form";
+import { Submit } from "./submit";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
-
-export function PasswordChange({ email }: { email: string }) {
+import { Label } from "./ui/label";
+export function PasswordChange() {
 	const { toast } = useToast();
-	const [pending, setPending] = useState(false);
-	const form = useForm<SignIn>({
-		resolver: zodResolver(signInSchema),
-		defaultValues: {
-			email: email,
-			password: "",
-		},
-	});
 
-	const submit = async (values: SignIn) => {
-		setPending(true);
+	const submit = async (form: FormData) => {
+		const currentPassword = form.get("current-password") as string;
+		const newPassword = form.get("new-password") as string;
 		try {
-			const { email, password } = values;
-			const { error, message } = await changePassword(email, password);
-			if (error) {
-				toast({
-					title: "Error",
-					description: error,
-					variant: "destructive",
-				});
-				return;
-			}
-			toast({
-				title: "Success",
-				description: message,
-				variant: "default",
-			});
+			await changePassword(
+				{ newPassword, currentPassword },
+				{
+					onSuccess: () => {
+						toast({
+							title: "Success",
+							description: "Password changed successfully",
+						});
+					},
+					onError: (ctx) => {
+						toast({
+							title: "Something went wrong",
+							description: ctx.error.message,
+							variant: "destructive",
+						});
+					},
+				},
+			);
 		} catch (error) {
 			console.error(error);
 			toast({
 				title: "Error",
-				description: "Internal server error",
+				description:
+					error instanceof Error ? error.message : "Internal server error",
 				variant: "destructive",
 			});
-		} finally {
-			setPending(false);
 		}
 	};
 
 	return (
-		<Form {...form}>
-			<form
-				onSubmit={form.handleSubmit(submit)}
-				className="grid grid-cols-4 gap-4 items-center"
-			>
-				<div className="col-span-3">
-					<FormField
-						label="Password"
-						control={form.control}
-						name="password"
-						render={({ field }) => (
-							<Input {...field} className="w-full" placeholder="*******" />
-						)}
-					/>
-				</div>
-				<div className="col-span-1">
-					<Button type="submit" disabled={pending}>
-						{pending ? (
-							<LoaderCircle className="animate-spin w-4 h-4 mr-2" />
-						) : null}
-						{pending ? "Updating..." : "Update"}
-					</Button>
-				</div>
-			</form>
-		</Form>
+		<Card>
+			<CardHeader>
+				<CardTitle>Change your password</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<Form action={submit} className="grid gap-4 items-center max-w-sm">
+					<div className="grid gap-2">
+						<Label htmlFor="current-password">Current password</Label>
+						<Input
+							id="current-password"
+							name="current-password"
+							className="w-full"
+							placeholder="**********"
+							required
+							type="password"
+							autoComplete="current-password"
+						/>
+					</div>
+					<div className="grid gap-2">
+						<Label htmlFor="new-password">New password</Label>
+						<Input
+							id="new-password"
+							name="new-password"
+							className="w-full"
+							placeholder="**********"
+							required
+							type="password"
+							autoComplete="new-password"
+						/>
+					</div>
+					<Submit>Change password</Submit>
+				</Form>
+			</CardContent>
+		</Card>
 	);
 }

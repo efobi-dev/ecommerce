@@ -5,8 +5,9 @@ import { notFound } from "next/navigation";
 
 export async function generateMetadata({
 	params,
-}: { params: { name: string } }): Promise<Metadata> {
-	const decodedName = decodeURIComponent(params.name);
+}: { params: Promise<{ name: string }> }): Promise<Metadata> {
+	const { name } = await params;
+	const decodedName = decodeURIComponent(name);
 	const product = await prisma.product.findFirst({
 		where: { name: decodedName },
 		include: { images: true },
@@ -32,8 +33,10 @@ export async function generateMetadata({
 	};
 }
 
-export default async function Page({ params }: { params: { name: string } }) {
-	const { name } = params;
+export default async function Page({
+	params,
+}: { params: Promise<{ name: string }> }) {
+	const { name } = await params;
 	if (!name) {
 		notFound();
 	}

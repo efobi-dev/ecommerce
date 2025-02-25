@@ -89,34 +89,82 @@ model Order {
   updatedAt        DateTime        @updatedAt
 }
 
-model User {
-  id             String    @id @default(cuid())
-  sessions       Session[]
-  email          String    @unique
-  fullName       String
-  hashedPassword String    @unique
-  role           Role
-  customer       Customer?
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  userId    String
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
-
-  @@index([userId])
-}
-
-enum Role {
-  Admin
-  Superadmin
-  User
-}
-
 model Store {
   id          String  @id @default(cuid())
   name        String
   url         String
   maintenance Boolean @default(false)
+}
+
+model User {
+  id            String     @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  role          String?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
+  Account       Account[]
+  Session       Session[]
+  Customer      Customer[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id             String   @id
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime
+  updatedAt      DateTime
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model BannerImages {
+  id      String  @id @default(cuid())
+  url     String
+  altText String
+  active  Boolean @default(false)
 }

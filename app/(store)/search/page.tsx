@@ -6,8 +6,8 @@ import type { Metadata } from "next";
 
 export async function generateMetadata({
 	searchParams,
-}: { searchParams: { q?: string } }): Promise<Metadata> {
-	const query = searchParams.q || "";
+}: { searchParams: Promise<{ q?: string }> }): Promise<Metadata> {
+	const query = (await searchParams).q || "";
 	return {
 		title: query,
 	};
@@ -15,8 +15,8 @@ export async function generateMetadata({
 
 export default async function SearchPage({
 	searchParams,
-}: { searchParams: { q?: string } }) {
-	const query = searchParams.q || "";
+}: { searchParams: Promise<{ q?: string }> }) {
+	const query = (await searchParams).q || "";
 
 	let where: Prisma.ProductWhereInput = {};
 	if (query) {
